@@ -1,0 +1,16 @@
+package com.eirs.pairs.constants;
+
+public enum UtilityType {
+    PAIRING_EXPIRY_PROCESS,
+    GREY_TO_BLACKLIST,
+    REMINDER_UTILITY,
+
+    //    GENERIC_REMINDER,
+    PAIRING_CLEAN,
+
+    PAIR_MGMT_INIT_START_CLEAN,
+    DUPLICATE_EXPIRY_PROCESS,
+    P4_PROCESS,
+    DUPLICATE_UPDATE_MSISDN,
+    PAIR_UPDATE_MSISDN;
+}
