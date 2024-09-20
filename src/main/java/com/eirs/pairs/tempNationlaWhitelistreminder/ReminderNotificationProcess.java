@@ -50,9 +50,6 @@ public class ReminderNotificationProcess {
     @Autowired
     ModuleAlertService moduleAlertService;
 
-    @Autowired
-    AlertConfig alertConfig;
-
     public void process() {
         Long start = System.currentTimeMillis();
         LocalDate localDate = LocalDate.now();
@@ -139,7 +136,7 @@ public class ReminderNotificationProcess {
         Map<SmsPlaceHolders, String> map = new HashMap<>();
         map.put(SmsPlaceHolders.IMEI, tempNationalWhiteDto.getImei());
         map.put(SmsPlaceHolders.DATE_DD_MMM_YYYY, DateFormatterConstants.reminderNotificationSmsDateFormat.format(tempNationalWhiteDto.getCreatedOn()));
-        NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(tempNationalWhiteDto.getMsisdn()).smsTag(getSmsTag(reminderStatus).name()).smsPlaceHolder(map).language(null).moduleName(alertConfig.getProcessId(UtilityType.REMINDER_UTILITY)).build();
+        NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(tempNationalWhiteDto.getMsisdn()).smsTag(getSmsTag(reminderStatus).name()).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName(UtilityType.REMINDER_UTILITY)).build();
         NotificationResponseDto responseDto = notificationService.sendSms(notificationDetailsDto);
 
         if (responseDto != null) {

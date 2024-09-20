@@ -1,6 +1,6 @@
 package com.eirs.pairs;
 
-import com.eirs.pairs.alerts.AlertConfig;
+import com.eirs.pairs.config.AppConfig;
 import com.eirs.pairs.constants.UtilityType;
 import com.eirs.pairs.p4.P4Process;
 import com.eirs.pairs.reminder.GenericReminderNotificationProcess;
@@ -28,6 +28,8 @@ public class Application implements CommandLineRunner {
     @Autowired
     ApplicationContext applicationContext;
 
+    public static String moduleName;
+
     public static void main(String[] args) {
 
         ApplicationContext context = SpringApplication.run(Application.class, args);
@@ -38,7 +40,7 @@ public class Application implements CommandLineRunner {
         UtilityType utilityType = null;
         try {
             utilityType = UtilityType.valueOf(args[0]);
-            applicationContext.getBean(AlertConfig.class).getProcessId(utilityType);
+            moduleName = applicationContext.getBean(AppConfig.class).getModuleName(utilityType);
         } catch (RuntimeException e) {
             log.error("Exception : {}", e.getMessage(), e);
             System.exit(0);

@@ -59,12 +59,9 @@ public class PairCleanUpUtility implements UtilityService {
     @Autowired
     ModuleAlertService moduleAlertService;
 
-    @Autowired
-    AlertConfig alertConfig;
-
     @Override
     public void runUtility() {
-        MODULE_NAME = alertConfig.getProcessId(UtilityType.PAIRING_CLEAN);
+        MODULE_NAME = appConfig.getModuleName(UtilityType.PAIRING_CLEAN);
         long start = System.currentTimeMillis();
         LocalDate localDate = LocalDate.now();
         if (!moduleAuditTrailService.canProcessRun(localDate, MODULE_NAME)) {

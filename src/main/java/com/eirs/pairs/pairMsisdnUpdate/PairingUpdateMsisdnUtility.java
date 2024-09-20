@@ -1,6 +1,7 @@
 package com.eirs.pairs.pairMsisdnUpdate;
 
 import com.eirs.pairs.alerts.AlertConfig;
+import com.eirs.pairs.config.AppConfig;
 import com.eirs.pairs.constants.SmsPlaceHolders;
 import com.eirs.pairs.constants.SmsTag;
 import com.eirs.pairs.constants.UtilityType;
@@ -52,12 +53,12 @@ public class PairingUpdateMsisdnUtility implements UtilityService {
     private HlrDumpRepository hlrDumpRepository;
 
     @Autowired
-    AlertConfig alertConfig;
+    AppConfig appConfig;
 
     @Override
     @Transactional
     public void runUtility() {
-        MODULE_NAME = alertConfig.getProcessId(UtilityType.PAIR_UPDATE_MSISDN);
+        MODULE_NAME = appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN);
         Integer count = 0;
         Long start = System.currentTimeMillis();
         LocalDate localDate = LocalDate.now();

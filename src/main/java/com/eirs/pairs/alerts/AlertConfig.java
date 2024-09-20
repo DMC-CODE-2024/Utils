@@ -13,29 +13,10 @@ import java.util.Map;
 
 @Configuration
 @Data
-@ConfigurationProperties(prefix = "alerts")
+@ConfigurationProperties(prefix = "eirs.alert")
 public class AlertConfig {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private String postUrl;
-
-    private String processId;
+    private String url;
 
     private Map<AlertIds, AlertConfigDto> alertsMapping;
-
-    private Map<UtilityType, String> processMapping;
-
-    @PostConstruct
-    public void init() {
-        log.info("ProcessMapping Loaded from Config:{}", processMapping);
-    }
-
-    public String getProcessId(UtilityType utilityType) {
-        String processId = processMapping.get(utilityType);
-        if (processId == null) {
-            log.error("Please add ProcessId for {} in application.properties", utilityType);
-            throw new RuntimeException("Please add ProcessId for " + utilityType + " application.properties");
-        }
-        return processId;
-    }
 }

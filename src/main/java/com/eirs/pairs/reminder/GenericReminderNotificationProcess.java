@@ -60,9 +60,6 @@ public class GenericReminderNotificationProcess {
 
     private String NWL_ID = "national_whitelist_id";
 
-    @Autowired
-    private AlertConfig alertConfig;
-
     public void process() {
         ID = StringUtils.equalsIgnoreCase("nationalWhiteList", processName) ? NWL_ID : ID;
         featureName = moduleName + "_" + processName;
@@ -154,7 +151,7 @@ public class GenericReminderNotificationProcess {
         map.put(SmsPlaceHolders.MSISDN, tempNationalWhiteDto.getMsisdn());
         map.put(SmsPlaceHolders.REQUEST_ID, tempNationalWhiteDto.getTransactionId());
         map.put(SmsPlaceHolders.DATE_DD_MMM_YYYY, DateFormatterConstants.reminderNotificationSmsDateFormat.format(tempNationalWhiteDto.getCreatedOn()));
-        NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(tempNationalWhiteDto.getMsisdn()).smsTag(getSmsTag(reminderStatus)).smsPlaceHolder(map).language(null).moduleName(alertConfig.getProcessId(UtilityType.REMINDER_UTILITY)).requestId(tempNationalWhiteDto.getTransactionId()).build();
+        NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(tempNationalWhiteDto.getMsisdn()).smsTag(getSmsTag(reminderStatus)).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName(UtilityType.REMINDER_UTILITY)).requestId(tempNationalWhiteDto.getTransactionId()).build();
         NotificationResponseDto responseDto = notificationService.sendSms(notificationDetailsDto);
 
         if (responseDto != null) {

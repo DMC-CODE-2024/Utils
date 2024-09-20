@@ -1,12 +1,9 @@
 package com.eirs.pairs.duplicateMsisdnUpdate;
 
-import com.eirs.pairs.alerts.AlertConfig;
 import com.eirs.pairs.config.AppConfig;
-import com.eirs.pairs.constants.DBType;
 import com.eirs.pairs.constants.SmsPlaceHolders;
 import com.eirs.pairs.constants.SmsTag;
 import com.eirs.pairs.constants.UtilityType;
-import com.eirs.pairs.dto.FileDataDto;
 import com.eirs.pairs.dto.NotificationDetailsDto;
 import com.eirs.pairs.exceptions.NotificationException;
 import com.eirs.pairs.repository.DuplicateRepository;
@@ -14,7 +11,10 @@ import com.eirs.pairs.repository.HlrDumpRepository;
 import com.eirs.pairs.repository.entity.Duplicate;
 import com.eirs.pairs.repository.entity.HlrDumpEntity;
 import com.eirs.pairs.repository.entity.ModuleAuditTrail;
-import com.eirs.pairs.service.*;
+import com.eirs.pairs.service.ModuleAlertService;
+import com.eirs.pairs.service.ModuleAuditTrailService;
+import com.eirs.pairs.service.NotificationService;
+import com.eirs.pairs.service.UtilityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -41,8 +38,6 @@ public class DuplicateUpdateMsisdnUtility implements UtilityService {
     @Autowired
     ModuleAuditTrailService moduleAuditTrailService;
 
-    private String MODULE_NAME;
-
     DateTimeFormatter notificationSmsDateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
     @Autowired
     private ModuleAlertService moduleAlertService;
@@ -54,12 +49,12 @@ public class DuplicateUpdateMsisdnUtility implements UtilityService {
     private HlrDumpRepository hlrDumpRepository;
 
     @Autowired
-    AlertConfig alertConfig;
+    AppConfig appConfig;
 
     @Override
     @Transactional
     public void runUtility() {
-        MODULE_NAME = alertConfig.getProcessId(UtilityType.DUPLICATE_UPDATE_MSISDN);
+        String MODULE_NAME = appConfig.getModuleName(UtilityType.DUPLICATE_UPDATE_MSISDN);
         Integer count = 0;
         Long start = System.currentTimeMillis();
         LocalDate localDate = LocalDate.now();
@@ -109,7 +104,7 @@ public class DuplicateUpdateMsisdnUtility implements UtilityService {
             map.put(SmsPlaceHolders.REQUEST_ID, duplicate.getTransactionId());
             map.put(SmsPlaceHolders.MSISDN, duplicate.getMsisdn());
             map.put(SmsPlaceHolders.DATE_DD_MMM_YYYY, notificationSmsDateFormat.format(duplicate.getExpiryDate()));
-            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(duplicate.getMsisdn()).smsTag(SmsTag.DuplicateSms.name()).smsPlaceHolder(map).language(null).moduleName(MODULE_NAME).build();
+            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(duplicate.getMsisdn()).smsTag(SmsTag.DuplicateSms.name()).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName(UtilityType.DUPLICATE_UPDATE_MSISDN)).build();
             notificationService.sendSmsInWindow(notificationDetailsDto);
         } catch (NotificationException e) {
             logger.error("Notification not send for duplicate:{} Error:{}", duplicate, e.getMessage());

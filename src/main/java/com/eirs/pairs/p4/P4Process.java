@@ -36,9 +36,6 @@ public class P4Process {
 
     @Autowired
     private ModuleAlertService moduleAlertService;
-    private String moduleName = UtilityType.P4_PROCESS.name();
-
-    final String DEPENDENT_MODULE_NAME = "National Whitelist";
 
     public void executeQueries(LocalDate localDate) {
         if (appConfig.getDbType() == DBType.MYSQL)
@@ -95,10 +92,11 @@ public class P4Process {
 
     @Transactional
     private void processAsMySQL(LocalDate localDate) {
+        String moduleName = appConfig.getModuleName(UtilityType.P4_PROCESS);
         String edrTableDate = localDate.format(edrTableFormat);
         Long start = System.currentTimeMillis();
-        if (!moduleAuditTrailService.previousDependentModuleExecuted(localDate, DEPENDENT_MODULE_NAME)) {
-            logger.info("Process:{} will not execute as already Dependent Module:{} Not Executed for the day {}", moduleName, DEPENDENT_MODULE_NAME, localDate);
+        if (!moduleAuditTrailService.previousDependentModuleExecuted(localDate, appConfig.getDependentModuleForP4())) {
+            logger.info("Process:{} will not execute as already Dependent Module:{} Not Executed for the day {}", moduleName, appConfig.getDependentModuleForP4(), localDate);
             return;
         }
         if (!moduleAuditTrailService.canProcessRun(localDate, moduleName)) {
@@ -141,11 +139,12 @@ public class P4Process {
 
     @Transactional
     private void processAsOracle(LocalDate localDate) {
+        String moduleName = appConfig.getModuleName(UtilityType.P4_PROCESS);
         String edrTableDate = localDate.format(edrTableFormat);
         Long start = System.currentTimeMillis();
         LocalDate now = LocalDate.now();
-        if (!moduleAuditTrailService.previousDependentModuleExecuted(localDate, DEPENDENT_MODULE_NAME)) {
-            logger.info("Process:{} will not execute as already Dependent Module:{} Not Executed for the day {}", moduleName, DEPENDENT_MODULE_NAME, localDate);
+        if (!moduleAuditTrailService.previousDependentModuleExecuted(localDate, appConfig.getDependentModuleForP4())) {
+            logger.info("Process:{} will not execute as already Dependent Module:{} Not Executed for the day {}", moduleName, appConfig.getDependentModuleForP4(), localDate);
             return;
         }
         if (!moduleAuditTrailService.canProcessRun(now, moduleName)) {

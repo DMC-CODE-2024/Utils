@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.eirs</groupId>
-    <artifactId>eirs-utils</artifactId>
-    <version>1.0.0.1</version>
+    <artifactId>utils</artifactId>
+    <version>1.0.0</version>
     <name>eirs-utils</name>
     <description>Eirs Utility programs</description>
     <properties>
@@ -75,6 +75,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
             <optional>true</optional>
         </dependency>
         <dependency>

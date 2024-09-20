@@ -1,6 +1,7 @@
 package com.eirs.pairs.service;
 
 import com.eirs.pairs.alerts.AlertConfig;
+import com.eirs.pairs.config.AppConfig;
 import com.eirs.pairs.constants.NotificationLanguage;
 import com.eirs.pairs.constants.UtilityType;
 import com.eirs.pairs.reminder.GenericReminderNotificationProcess;
@@ -41,7 +42,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     private ModuleAlertService moduleAlertService;
 
     @Autowired
-    private AlertConfig alertConfig;
+    private AppConfig appConfig;
 
     @Override
     public NotificationLanguage getDefaultLanguage() {
@@ -59,7 +60,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public Integer getManualPairCleanUpDays() {
         String key = SystemConfigKeys.manual_pair_clean_up_days;
-        String featureName = alertConfig.getProcessId(UtilityType.PAIRING_CLEAN);
+        String featureName = appConfig.getModuleName(UtilityType.PAIRING_CLEAN);
         try {
             if (manualPairCleanUpDays == null) {
                 List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
@@ -80,7 +81,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public Integer getMgmtInitStartCleanUpHours() {
         String key = SystemConfigKeys.mgmt_init_start_clean_up_hours;
-        String featureName = alertConfig.getProcessId(UtilityType.PAIR_MGMT_INIT_START_CLEAN);
+        String featureName = appConfig.getModuleName(UtilityType.PAIR_MGMT_INIT_START_CLEAN);
         try {
             if (mgmtInitStartCleanUpHours == null) {
                 List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
@@ -101,7 +102,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public Integer getStolenGreyToBlackListdays() {
         String key = SystemConfigKeys.stolen_grey_to_black_list_days;
-        String featureName = alertConfig.getProcessId(UtilityType.GREY_TO_BLACKLIST);
+        String featureName = appConfig.getModuleName(UtilityType.GREY_TO_BLACKLIST);
         try {
             if (stolenGreyToBlackListDays == null) {
                 List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
@@ -122,7 +123,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public Integer getReminderFirstNotificationDays() {
         String key = SystemConfigKeys.reminder_first_notification_days;
-        String featureName = alertConfig.getProcessId(UtilityType.REMINDER_UTILITY);
+        String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
         try {
             List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
             if (CollectionUtils.isEmpty(values)) {
@@ -140,7 +141,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public Integer getReminderSecondNotificationDays() {
         String key = SystemConfigKeys.reminder_second_notification_days;
-        String featureName = alertConfig.getProcessId(UtilityType.REMINDER_UTILITY);
+        String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
         try {
             List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
             if (CollectionUtils.isEmpty(values)) {
@@ -158,7 +159,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public Integer getReminderThirdNotificationDays() {
         String key = SystemConfigKeys.reminder_third_notification_days;
-        String featureName = alertConfig.getProcessId(UtilityType.REMINDER_UTILITY);
+        String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
         try {
             List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
             if (CollectionUtils.isEmpty(values)) {
@@ -176,7 +177,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public Integer getGenericReminderFirstNotificationDays() {
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.generic_reminder_first_notification_days;
-        String featureName = alertConfig.getProcessId(UtilityType.REMINDER_UTILITY);
+        String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
         try {
             List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
             if (CollectionUtils.isEmpty(values)) {
@@ -194,7 +195,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public Integer getGenericReminderSecondNotificationDays() {
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.generic_reminder_second_notification_days;
-        String featureName = alertConfig.getProcessId(UtilityType.REMINDER_UTILITY);
+        String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
         try {
             List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
             if (CollectionUtils.isEmpty(values)) {
@@ -212,7 +213,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public Integer getGenericReminderThirdNotificationDays() {
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.generic_reminder_third_notification_days;
-        String featureName = alertConfig.getProcessId(UtilityType.REMINDER_UTILITY);
+        String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
         try {
             List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
             if (CollectionUtils.isEmpty(values)) {
@@ -230,7 +231,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public String getGenericReminderTableName() {
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.generic_reminder_table_name;
-        String featureName = alertConfig.getProcessId(UtilityType.REMINDER_UTILITY);
+        String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
         try {
             List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
             if (CollectionUtils.isEmpty(values)) {
@@ -248,7 +249,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public String getGenericReminderWhereClause() {
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.generic_reminder_where_clause;
-        String featureName = alertConfig.getProcessId(UtilityType.REMINDER_UTILITY);
+        String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
         try {
             List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
             if (CollectionUtils.isEmpty(values)) {
@@ -266,7 +267,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public Integer getEdrTableCleanDays() {
         String key = SystemConfigKeys.edr_table_clean_days;
-        String featureName = alertConfig.getProcessId(UtilityType.P4_PROCESS);
+        String featureName = appConfig.getModuleName(UtilityType.P4_PROCESS);
         try {
             List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
             if (CollectionUtils.isEmpty(values)) {
