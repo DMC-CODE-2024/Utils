@@ -35,12 +35,12 @@ public class StolenGreyToBlackProcess {
     private SystemConfigurationService systemConfigurationService;
     @Autowired
     ModuleAuditTrailService moduleAuditTrailService;
-    private String moduleName = UtilityType.GREY_TO_BLACKLIST.name();
     @Autowired
     private ModuleAlertService moduleAlertService;
 
     @Transactional
     public void executeQueries() {
+        String moduleName = appConfig.getModuleName(UtilityType.GREY_TO_BLACKLIST);
         Long start = System.currentTimeMillis();
         LocalDate localDate = LocalDate.now();
         if (!moduleAuditTrailService.canProcessRun(localDate, moduleName)) {

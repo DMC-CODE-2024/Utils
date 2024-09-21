@@ -121,60 +121,6 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     }
 
     @Override
-    public Integer getReminderFirstNotificationDays() {
-        String key = SystemConfigKeys.reminder_first_notification_days;
-        String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
-        try {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
-            if (CollectionUtils.isEmpty(values)) {
-                moduleAlertService.sendConfigurationMissingAlert(key, featureName);
-                throw new RuntimeException("Configuration missing in sys_param for key " + key);
-            } else {
-                return Integer.parseInt(values.get(0).getConfigValue());
-            }
-        } catch (Exception e) {
-            log.error("Error while getting Configuration missing in Sys_param table key:{} featureName:{}", key, featureName, e.getMessage());
-            throw new RuntimeException("Error for Configuration key " + key);
-        }
-    }
-
-    @Override
-    public Integer getReminderSecondNotificationDays() {
-        String key = SystemConfigKeys.reminder_second_notification_days;
-        String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
-        try {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
-            if (CollectionUtils.isEmpty(values)) {
-                moduleAlertService.sendConfigurationMissingAlert(key, featureName);
-                throw new RuntimeException("Configuration missing in sys_param for key " + key);
-            } else {
-                return Integer.parseInt(values.get(0).getConfigValue());
-            }
-        } catch (Exception e) {
-            log.error("Error while getting Configuration missing in Sys_param table key:{} featureName:{}", key, featureName, e.getMessage());
-            throw new RuntimeException("Error for Configuration key " + key);
-        }
-    }
-
-    @Override
-    public Integer getReminderThirdNotificationDays() {
-        String key = SystemConfigKeys.reminder_third_notification_days;
-        String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
-        try {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
-            if (CollectionUtils.isEmpty(values)) {
-                moduleAlertService.sendConfigurationMissingAlert(key, featureName);
-                throw new RuntimeException("Configuration missing in sys_param for key " + key);
-            } else {
-                return Integer.parseInt(values.get(0).getConfigValue());
-            }
-        } catch (Exception e) {
-            log.error("Error while getting Configuration missing in Sys_param table key:{} featureName:{}", key, featureName, e.getMessage());
-            throw new RuntimeException("Error for Configuration key " + key);
-        }
-    }
-
-    @Override
     public Integer getGenericReminderFirstNotificationDays() {
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.generic_reminder_first_notification_days;
         String featureName = appConfig.getModuleName(UtilityType.REMINDER_UTILITY);
@@ -283,10 +229,9 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     }
 
     @Override
-    public LocalTime getNotificationSmsStartTime() {
+    public LocalTime getNotificationSmsStartTime(String moduleName) {
         String key = SystemConfigKeys.notification_sms_start_time;
-        String featureName = SystemConfigKeys.featureName;
-        List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
+        List<SysParam> values = repository.findByConfigKeyAndModule(key, moduleName);
         if (notificationSmsStartTime == null) {
             if (!CollectionUtils.isEmpty(values)) {
                 String value = values.get(0).getConfigValue();
@@ -294,12 +239,12 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
                     String data[] = value.split(":");
                     notificationSmsStartTime = LocalTime.of(Integer.valueOf(data[0]), Integer.valueOf(data[1]));
                 } catch (Exception e) {
-                    moduleAlertService.sendConfigurationWrongValueAlert(key, value, featureName);
-                    log.error("Error while getting Configuration missing in Sys_param table key:{} featureName:{}", key, featureName, e.getMessage());
+                    moduleAlertService.sendConfigurationWrongValueAlert(key, value, moduleName);
+                    log.error("Error while getting Configuration missing in Sys_param table key:{} featureName:{}", key, moduleName, e.getMessage());
                     throw new RuntimeException("Error for Configuration key " + key);
                 }
             } else {
-                moduleAlertService.sendConfigurationMissingAlert(key, featureName);
+                moduleAlertService.sendConfigurationMissingAlert(key, moduleName);
                 throw new RuntimeException("Configuration missing in sys_param for key " + key);
             }
         }
@@ -308,23 +253,22 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
 
 
     @Override
-    public LocalTime getNotificationSmsEndTime() {
+    public LocalTime getNotificationSmsEndTime(String moduleName) {
         String key = SystemConfigKeys.notification_sms_end_time;
-        String featureName = SystemConfigKeys.featureName;
         if (notificationSmsEndTime == null) {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
+            List<SysParam> values = repository.findByConfigKeyAndModule(key, moduleName);
             if (!CollectionUtils.isEmpty(values)) {
                 String value = values.get(0).getConfigValue();
                 try {
                     String data[] = value.split(":");
                     notificationSmsEndTime = LocalTime.of(Integer.valueOf(data[0]), Integer.valueOf(data[1]));
                 } catch (Exception e) {
-                    moduleAlertService.sendConfigurationMissingAlert(key, featureName);
-                    log.error("Error while getting Configuration missing in Sys_param table key:{} featureName:{}", key, featureName, e.getMessage());
+                    moduleAlertService.sendConfigurationMissingAlert(key, moduleName);
+                    log.error("Error while getting Configuration missing in Sys_param table key:{} featureName:{}", key, moduleName, e.getMessage());
                     throw new RuntimeException("Error for Configuration key " + key);
                 }
             } else {
-                log.error("Configuration missing in Sys_param table key:{} featureName:{}", key, featureName);
+                log.error("Configuration missing in Sys_param table key:{} featureName:{}", key, moduleName);
                 throw new RuntimeException("Configuration missing in sys_param for key " + key);
             }
         }

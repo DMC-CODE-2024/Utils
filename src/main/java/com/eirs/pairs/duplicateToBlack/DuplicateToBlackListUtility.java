@@ -51,13 +51,12 @@ public class DuplicateToBlackListUtility implements UtilityService {
     AppConfig appConfig;
     final String updateDuplicateQuery = "update duplicate_device_detail set status='BLOCK' where id=<ID>";
 
-    final String MODULE_NAME = UtilityType.DUPLICATE_EXPIRY_PROCESS.name();
-
     @Autowired
     ModuleAlertService moduleAlertService;
 
     @Override
     public void runUtility() {
+        String MODULE_NAME = appConfig.getModuleName(UtilityType.DUPLICATE_EXPIRY_PROCESS);
         long start = System.currentTimeMillis();
         LocalDate localDate = LocalDate.now();
         if (!moduleAuditTrailService.canProcessRun(localDate, MODULE_NAME)) {

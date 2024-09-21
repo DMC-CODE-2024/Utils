@@ -15,12 +15,6 @@ public interface SystemConfigurationService {
 
     Integer getStolenGreyToBlackListdays();
 
-    Integer getReminderFirstNotificationDays();
-
-    Integer getReminderSecondNotificationDays();
-
-    Integer getReminderThirdNotificationDays();
-
     Integer getGenericReminderFirstNotificationDays();
 
     Integer getGenericReminderSecondNotificationDays();
@@ -33,8 +27,8 @@ public interface SystemConfigurationService {
 
     Integer getEdrTableCleanDays();
 
-    LocalTime getNotificationSmsStartTime();
+    LocalTime getNotificationSmsStartTime(String moduleName);
 
-    LocalTime getNotificationSmsEndTime();
+    LocalTime getNotificationSmsEndTime(String moduleName);
 
 }

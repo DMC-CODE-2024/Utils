@@ -5,7 +5,6 @@ import com.eirs.pairs.constants.DBType;
 import com.eirs.pairs.constants.UtilityType;
 import com.eirs.pairs.repository.entity.ModuleAuditTrail;
 import com.eirs.pairs.service.*;
-import com.eirs.pairs.tempNationlaWhitelistreminder.ReminderQueriesConstants;
 import com.eirs.pairs.utils.DateFormatterConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Service
 public class PairMgmtInitStartCleanUtility implements UtilityService {
@@ -37,11 +35,10 @@ public class PairMgmtInitStartCleanUtility implements UtilityService {
     @Autowired
     ModuleAlertService moduleAlertService;
 
-    String MODULE_NAME = UtilityType.PAIR_MGMT_INIT_START_CLEAN.name();
-
     @Override
     @Transactional
     public void runUtility() {
+        String MODULE_NAME = appConfig.getModuleName(UtilityType.PAIR_MGMT_INIT_START_CLEAN);
         Integer count = 0;
         Long start = System.currentTimeMillis();
         LocalDate localDate = LocalDate.now();

@@ -41,8 +41,6 @@ public class PairingUpdateMsisdnUtility implements UtilityService {
     @Autowired
     ModuleAuditTrailService moduleAuditTrailService;
 
-    private String MODULE_NAME;
-
     @Autowired
     private ModuleAlertService moduleAlertService;
 
@@ -58,7 +56,7 @@ public class PairingUpdateMsisdnUtility implements UtilityService {
     @Override
     @Transactional
     public void runUtility() {
-        MODULE_NAME = appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN);
+        String MODULE_NAME = appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN);
         Integer count = 0;
         Long start = System.currentTimeMillis();
         LocalDate localDate = LocalDate.now();
@@ -105,9 +103,9 @@ public class PairingUpdateMsisdnUtility implements UtilityService {
             map.put(SmsPlaceHolders.MSISDN, pairing.getMsisdn());
             NotificationDetailsDto notificationDetailsDto = null;
             if (pairing.getGsmaStatus() == GSMAStatus.VALID) {
-                notificationDetailsDto = NotificationDetailsDto.builder().msisdn(pairing.getMsisdn()).smsTag(SmsTag.AutoPairGsmaValidSMS.name()).smsPlaceHolder(map).language(null).moduleName(MODULE_NAME).build();
+                notificationDetailsDto = NotificationDetailsDto.builder().msisdn(pairing.getMsisdn()).smsTag(SmsTag.AutoPairGsmaValidSMS.name()).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN)).build();
             } else {
-                notificationDetailsDto = NotificationDetailsDto.builder().msisdn(pairing.getMsisdn()).smsTag(SmsTag.AutoPairGsmaInvalidSMS.name()).smsPlaceHolder(map).language(null).moduleName(MODULE_NAME).build();
+                notificationDetailsDto = NotificationDetailsDto.builder().msisdn(pairing.getMsisdn()).smsTag(SmsTag.AutoPairGsmaInvalidSMS.name()).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN)).build();
             }
             notificationService.sendSmsInWindow(notificationDetailsDto);
         } catch (NotificationException e) {

@@ -54,14 +54,12 @@ public class PairCleanUpUtility implements UtilityService {
     @Autowired
     SystemConfigurationService systemConfigurationService;
 
-    private String MODULE_NAME;
-
     @Autowired
     ModuleAlertService moduleAlertService;
 
     @Override
     public void runUtility() {
-        MODULE_NAME = appConfig.getModuleName(UtilityType.PAIRING_CLEAN);
+        String MODULE_NAME = appConfig.getModuleName(UtilityType.PAIRING_CLEAN);
         long start = System.currentTimeMillis();
         LocalDate localDate = LocalDate.now();
         if (!moduleAuditTrailService.canProcessRun(localDate, MODULE_NAME)) {
@@ -117,7 +115,7 @@ public class PairCleanUpUtility implements UtilityService {
             map.put(SmsPlaceHolders.IMSI, imsi);
             map.put(SmsPlaceHolders.MSISDN, msisdn);
             NotificationDetailsDto notificationDetailsDto = null;
-            notificationDetailsDto = NotificationDetailsDto.builder().msisdn(msisdn).smsTag(SmsTag.PairCleanUpSms.name()).smsPlaceHolder(map).language(null).moduleName(MODULE_NAME).build();
+            notificationDetailsDto = NotificationDetailsDto.builder().msisdn(msisdn).smsTag(SmsTag.PairCleanUpSms.name()).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName(UtilityType.PAIRING_CLEAN)).build();
             notificationService.sendSmsInWindow(notificationDetailsDto);
         } catch (NotificationException e) {
             log.error("Notification not send for  actualImei:{} , msisdn:{} , imei:{} Error:{}", actualImei, msisdn, imsi, e.getMessage());
