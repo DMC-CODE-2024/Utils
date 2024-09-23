@@ -152,6 +152,8 @@ public class GenericReminderNotificationProcess {
         map.put(SmsPlaceHolders.REQUEST_ID, tempNationalWhiteDto.getTransactionId());
         map.put(SmsPlaceHolders.DATE_DD_MMM_YYYY, DateFormatterConstants.reminderNotificationSmsDateFormat.format(tempNationalWhiteDto.getCreatedOn()));
         NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(tempNationalWhiteDto.getMsisdn()).smsTag(getSmsTag(reminderStatus)).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName(UtilityType.REMINDER_UTILITY)).requestId(tempNationalWhiteDto.getTransactionId()).build();
+        notificationDetailsDto.setStartTime(systemConfigurationService.getNotificationSmsStartTime(appConfig.getModuleName(UtilityType.REMINDER_UTILITY)));
+        notificationDetailsDto.setEndTime(systemConfigurationService.getNotificationSmsEndTime(appConfig.getModuleName(UtilityType.REMINDER_UTILITY)));
         NotificationResponseDto responseDto = notificationService.sendSmsInWindow(notificationDetailsDto);
 
         if (responseDto != null) {

@@ -26,8 +26,16 @@ public interface SystemConfigKeys {
     String generic_reminder_second_notification_days = "reminder_second_notification_days";
 
     String generic_reminder_third_notification_days = "reminder_third_notification_days";
-    String notification_sms_start_time = "notification_sms_start_time";
+    String duplicate_notification_sms_start_time = "duplicate_notification_sms_start_time";
 
-    String notification_sms_end_time = "notification_sms_end_time";
+    String duplicate_notification_sms_end_time = "duplicate_notification_sms_end_time";
+
+    String pairing_notification_sms_start_time = "pairing_notification_sms_start_time";
+
+    String pairing_notification_sms_end_time = "pairing_notification_sms_end_time";
+
+    String notification_sms_start_time = "reminder_notification_sms_start_time";
+
+    String notification_sms_end_time = "reminder_notification_sms_end_time";
     String default_language = "default_lang";
 }

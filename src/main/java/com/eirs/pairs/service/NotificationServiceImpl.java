@@ -76,8 +76,8 @@ public class NotificationServiceImpl implements NotificationService {
             }
             requestDto.setChannelType(NotificationChannelType.SMS);
             LocalDateTime now = LocalDateTime.now();
-            LocalDateTime startDate = LocalDateTime.of(LocalDate.now(), systemConfigurationService.getNotificationSmsStartTime(notificationDetailsDto.getModuleName()));
-            LocalDateTime endDate = LocalDateTime.of(LocalDate.now(), systemConfigurationService.getNotificationSmsEndTime(notificationDetailsDto.getModuleName()));
+            LocalDateTime startDate = LocalDateTime.of(LocalDate.now(), notificationDetailsDto.getStartTime());
+            LocalDateTime endDate = LocalDateTime.of(LocalDate.now(), notificationDetailsDto.getEndTime());
             if (now.isBefore(startDate)) {
                 requestDto.setDeliveryDateTime(startDate);
             }

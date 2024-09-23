@@ -31,4 +31,12 @@ public interface SystemConfigurationService {
 
     LocalTime getNotificationSmsEndTime(String moduleName);
 
+    LocalTime getDuplicateNotificationSmsStartTime();
+
+    LocalTime getDuplicateNotificationSmsEndTime();
+
+    LocalTime getPairingNotificationSmsStartTime();
+
+    LocalTime getPairingNotificationSmsEndTime();
+
 }

@@ -116,6 +116,8 @@ public class PairCleanUpUtility implements UtilityService {
             map.put(SmsPlaceHolders.MSISDN, msisdn);
             NotificationDetailsDto notificationDetailsDto = null;
             notificationDetailsDto = NotificationDetailsDto.builder().msisdn(msisdn).smsTag(SmsTag.PairCleanUpSms.name()).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName(UtilityType.PAIRING_CLEAN)).build();
+            notificationDetailsDto.setStartTime(systemConfigurationService.getPairingNotificationSmsStartTime());
+            notificationDetailsDto.setEndTime(systemConfigurationService.getPairingNotificationSmsEndTime());
             notificationService.sendSmsInWindow(notificationDetailsDto);
         } catch (NotificationException e) {
             log.error("Notification not send for  actualImei:{} , msisdn:{} , imei:{} Error:{}", actualImei, msisdn, imsi, e.getMessage());

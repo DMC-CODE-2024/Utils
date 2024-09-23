@@ -15,10 +15,7 @@ import com.eirs.pairs.repository.entity.Duplicate;
 import com.eirs.pairs.repository.entity.HlrDumpEntity;
 import com.eirs.pairs.repository.entity.ModuleAuditTrail;
 import com.eirs.pairs.repository.entity.Pairing;
-import com.eirs.pairs.service.ModuleAlertService;
-import com.eirs.pairs.service.ModuleAuditTrailService;
-import com.eirs.pairs.service.NotificationService;
-import com.eirs.pairs.service.UtilityService;
+import com.eirs.pairs.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +46,9 @@ public class PairingUpdateMsisdnUtility implements UtilityService {
 
     @Autowired
     private HlrDumpRepository hlrDumpRepository;
+
+    @Autowired
+    private SystemConfigurationService systemConfigurationService;
 
     @Autowired
     AppConfig appConfig;
@@ -107,6 +107,8 @@ public class PairingUpdateMsisdnUtility implements UtilityService {
             } else {
                 notificationDetailsDto = NotificationDetailsDto.builder().msisdn(pairing.getMsisdn()).smsTag(SmsTag.AutoPairGsmaInvalidSMS.name()).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN)).build();
             }
+            notificationDetailsDto.setStartTime(systemConfigurationService.getPairingNotificationSmsStartTime());
+            notificationDetailsDto.setEndTime(systemConfigurationService.getPairingNotificationSmsEndTime());
             notificationService.sendSmsInWindow(notificationDetailsDto);
         } catch (NotificationException e) {
             logger.error("Notification not send for duplicate:{} Error:{}", pairing, e.getMessage());

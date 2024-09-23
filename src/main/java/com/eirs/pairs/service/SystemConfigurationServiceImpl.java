@@ -1,6 +1,5 @@
 package com.eirs.pairs.service;
 
-import com.eirs.pairs.alerts.AlertConfig;
 import com.eirs.pairs.config.AppConfig;
 import com.eirs.pairs.constants.NotificationLanguage;
 import com.eirs.pairs.constants.UtilityType;
@@ -15,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class SystemConfigurationServiceImpl implements SystemConfigurationService {
@@ -29,6 +25,14 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     LocalTime notificationSmsStartTime;
 
     LocalTime notificationSmsEndTime;
+
+    LocalTime pairingNotificationSmsStartTime;
+
+    LocalTime pairingNotificationSmsEndTime;
+
+    LocalTime duplicateNotificationSmsStartTime;
+
+    LocalTime duplicateNotificationSmsEndTime;
 
     private NotificationLanguage defaultLanguage;
 
@@ -273,5 +277,97 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
             }
         }
         return notificationSmsEndTime;
+    }
+
+    @Override
+    public LocalTime getDuplicateNotificationSmsStartTime() {
+        String key = SystemConfigKeys.duplicate_notification_sms_start_time;
+        List<SysParam> values = repository.findByConfigKeyAndModule(key, appConfig.getModuleName(UtilityType.DUPLICATE_UPDATE_MSISDN));
+        if (duplicateNotificationSmsStartTime == null) {
+            if (!CollectionUtils.isEmpty(values)) {
+                String value = values.get(0).getConfigValue();
+                try {
+                    String data[] = value.split(":");
+                    duplicateNotificationSmsStartTime = LocalTime.of(Integer.valueOf(data[0]), Integer.valueOf(data[1]));
+                } catch (Exception e) {
+                    moduleAlertService.sendConfigurationWrongValueAlert(key, value, appConfig.getModuleName(UtilityType.DUPLICATE_UPDATE_MSISDN));
+                    log.error("Error while getting Configuration missing in Sys_param table key:{} featureName:{}", key, appConfig.getModuleName(UtilityType.DUPLICATE_UPDATE_MSISDN), e.getMessage());
+                    throw new RuntimeException("Error for Configuration key " + key);
+                }
+            } else {
+                moduleAlertService.sendConfigurationMissingAlert(key, appConfig.getModuleName(UtilityType.DUPLICATE_UPDATE_MSISDN));
+                throw new RuntimeException("Configuration missing in sys_param for key " + key);
+            }
+        }
+        return duplicateNotificationSmsStartTime;
+    }
+
+    @Override
+    public LocalTime getDuplicateNotificationSmsEndTime() {
+        String key = SystemConfigKeys.duplicate_notification_sms_end_time;
+        if (duplicateNotificationSmsEndTime == null) {
+            List<SysParam> values = repository.findByConfigKeyAndModule(key, appConfig.getModuleName(UtilityType.DUPLICATE_UPDATE_MSISDN));
+            if (!CollectionUtils.isEmpty(values)) {
+                String value = values.get(0).getConfigValue();
+                try {
+                    String data[] = value.split(":");
+                    duplicateNotificationSmsEndTime = LocalTime.of(Integer.valueOf(data[0]), Integer.valueOf(data[1]));
+                } catch (Exception e) {
+                    moduleAlertService.sendConfigurationMissingAlert(key, appConfig.getModuleName(UtilityType.DUPLICATE_UPDATE_MSISDN));
+                    log.error("Error while getting Configuration missing in Sys_param table key:{} featureName:{}", key, appConfig.getModuleName(UtilityType.DUPLICATE_UPDATE_MSISDN), e.getMessage());
+                    throw new RuntimeException("Error for Configuration key " + key);
+                }
+            } else {
+                log.error("Configuration missing in Sys_param table key:{} featureName:{}", key, appConfig.getModuleName(UtilityType.DUPLICATE_UPDATE_MSISDN));
+                throw new RuntimeException("Configuration missing in sys_param for key " + key);
+            }
+        }
+        return duplicateNotificationSmsEndTime;
+    }
+
+    @Override
+    public LocalTime getPairingNotificationSmsStartTime() {
+        String key = SystemConfigKeys.pairing_notification_sms_start_time;
+        List<SysParam> values = repository.findByConfigKeyAndModule(key, appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN));
+        if (duplicateNotificationSmsStartTime == null) {
+            if (!CollectionUtils.isEmpty(values)) {
+                String value = values.get(0).getConfigValue();
+                try {
+                    String data[] = value.split(":");
+                    duplicateNotificationSmsStartTime = LocalTime.of(Integer.valueOf(data[0]), Integer.valueOf(data[1]));
+                } catch (Exception e) {
+                    moduleAlertService.sendConfigurationWrongValueAlert(key, value, appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN));
+                    log.error("Error while getting Configuration missing in Sys_param table key:{} featureName:{}", key, appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN), e.getMessage());
+                    throw new RuntimeException("Error for Configuration key " + key);
+                }
+            } else {
+                moduleAlertService.sendConfigurationMissingAlert(key, appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN));
+                throw new RuntimeException("Configuration missing in sys_param for key " + key);
+            }
+        }
+        return duplicateNotificationSmsStartTime;
+    }
+
+    @Override
+    public LocalTime getPairingNotificationSmsEndTime() {
+        String key = SystemConfigKeys.pairing_notification_sms_end_time;
+        if (pairingNotificationSmsEndTime == null) {
+            List<SysParam> values = repository.findByConfigKeyAndModule(key, appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN));
+            if (!CollectionUtils.isEmpty(values)) {
+                String value = values.get(0).getConfigValue();
+                try {
+                    String data[] = value.split(":");
+                    pairingNotificationSmsEndTime = LocalTime.of(Integer.valueOf(data[0]), Integer.valueOf(data[1]));
+                } catch (Exception e) {
+                    moduleAlertService.sendConfigurationMissingAlert(key, appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN));
+                    log.error("Error while getting Configuration missing in Sys_param table key:{} featureName:{}", key, appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN), e.getMessage());
+                    throw new RuntimeException("Error for Configuration key " + key);
+                }
+            } else {
+                log.error("Configuration missing in Sys_param table key:{} featureName:{}", key, appConfig.getModuleName(UtilityType.PAIR_UPDATE_MSISDN));
+                throw new RuntimeException("Configuration missing in sys_param for key " + key);
+            }
+        }
+        return pairingNotificationSmsEndTime;
     }
 }

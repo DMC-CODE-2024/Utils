@@ -11,10 +11,7 @@ import com.eirs.pairs.repository.HlrDumpRepository;
 import com.eirs.pairs.repository.entity.Duplicate;
 import com.eirs.pairs.repository.entity.HlrDumpEntity;
 import com.eirs.pairs.repository.entity.ModuleAuditTrail;
-import com.eirs.pairs.service.ModuleAlertService;
-import com.eirs.pairs.service.ModuleAuditTrailService;
-import com.eirs.pairs.service.NotificationService;
-import com.eirs.pairs.service.UtilityService;
+import com.eirs.pairs.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +45,8 @@ public class DuplicateUpdateMsisdnUtility implements UtilityService {
     @Autowired
     private HlrDumpRepository hlrDumpRepository;
 
+    @Autowired
+    private SystemConfigurationService systemConfigurationService;
     @Autowired
     AppConfig appConfig;
 
@@ -105,6 +104,8 @@ public class DuplicateUpdateMsisdnUtility implements UtilityService {
             map.put(SmsPlaceHolders.MSISDN, duplicate.getMsisdn());
             map.put(SmsPlaceHolders.DATE_DD_MMM_YYYY, notificationSmsDateFormat.format(duplicate.getExpiryDate()));
             NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(duplicate.getMsisdn()).smsTag(SmsTag.DuplicateSms.name()).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName(UtilityType.DUPLICATE_UPDATE_MSISDN)).build();
+            notificationDetailsDto.setStartTime(systemConfigurationService.getDuplicateNotificationSmsStartTime());
+            notificationDetailsDto.setEndTime(systemConfigurationService.getDuplicateNotificationSmsEndTime());
             notificationService.sendSmsInWindow(notificationDetailsDto);
         } catch (NotificationException e) {
             logger.error("Notification not send for duplicate:{} Error:{}", duplicate, e.getMessage());
