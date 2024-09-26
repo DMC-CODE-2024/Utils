@@ -7,6 +7,7 @@ import com.eirs.pairs.constants.SmsPlaceHolders;
 import com.eirs.pairs.constants.SmsTag;
 import com.eirs.pairs.constants.UtilityType;
 import com.eirs.pairs.dto.NotificationDetailsDto;
+import com.eirs.pairs.exceptions.NotificationException;
 import com.eirs.pairs.repository.entity.ModuleAuditTrail;
 import com.eirs.pairs.service.*;
 import com.eirs.pairs.utils.DateFormatterConstants;
@@ -154,20 +155,24 @@ public class GenericReminderNotificationProcess {
         NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(tempNationalWhiteDto.getMsisdn()).smsTag(getSmsTag(reminderStatus)).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName(UtilityType.REMINDER_UTILITY)).requestId(tempNationalWhiteDto.getTransactionId()).build();
         notificationDetailsDto.setStartTime(systemConfigurationService.getNotificationSmsStartTime(appConfig.getModuleName(UtilityType.REMINDER_UTILITY)));
         notificationDetailsDto.setEndTime(systemConfigurationService.getNotificationSmsEndTime(appConfig.getModuleName(UtilityType.REMINDER_UTILITY)));
-        NotificationResponseDto responseDto = notificationService.sendSmsInWindow(notificationDetailsDto);
-
-        if (responseDto != null) {
-            if ("SUCCESS".equalsIgnoreCase(responseDto.getMessage())) {
-                successCount++;
-                String query = GenericReminderQueriesConstants.UPDATE_NATIONAL_WHITELIST
-                        .replaceAll(GenericReminderQueriesConstants.WHERE_ID, ID)
-                        .replaceAll(GenericReminderQueriesConstants.PARAM_REMINDER_STATUS, String.valueOf(tempNationalWhiteDto.getReminderStatus() + 1))
-                        .replaceAll(GenericReminderQueriesConstants.ID, String.valueOf(tempNationalWhiteDto.getId()))
-                        .replaceAll(GenericReminderQueriesConstants.TABLE_NAME, systemConfigurationService.getGenericReminderTableName());
-                queryExecutorService.execute(query);
-            } else {
-                failCount++;
+        try {
+            NotificationResponseDto responseDto = notificationService.sendSmsInWindow(notificationDetailsDto);
+            if (responseDto != null) {
+                if ("SUCCESS".equalsIgnoreCase(responseDto.getMessage())) {
+                    successCount++;
+                    String query = GenericReminderQueriesConstants.UPDATE_NATIONAL_WHITELIST
+                            .replaceAll(GenericReminderQueriesConstants.WHERE_ID, ID)
+                            .replaceAll(GenericReminderQueriesConstants.PARAM_REMINDER_STATUS, String.valueOf(tempNationalWhiteDto.getReminderStatus() + 1))
+                            .replaceAll(GenericReminderQueriesConstants.ID, String.valueOf(tempNationalWhiteDto.getId()))
+                            .replaceAll(GenericReminderQueriesConstants.TABLE_NAME, systemConfigurationService.getGenericReminderTableName());
+                    queryExecutorService.execute(query);
+                } else {
+                    failCount++;
+                }
             }
+        } catch (NotificationException e) {
+            log.info("Notification not sent for duplicate:{}", duplicate);
         }
+
     }
 }
