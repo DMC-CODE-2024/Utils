@@ -171,7 +171,7 @@ public class GenericReminderNotificationProcess {
                 }
             }
         } catch (NotificationException e) {
-            log.info("Notification not sent for duplicate:{}", duplicate);
+            log.info("Notification not sent for GenericTableDto:{}", tempNationalWhiteDto);
         }
 
     }
