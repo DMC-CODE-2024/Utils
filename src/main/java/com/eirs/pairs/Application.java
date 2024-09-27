@@ -48,19 +48,23 @@ public class Application implements CommandLineRunner {
             log.error("Not able to locate Utility : {}", args[0], e);
             System.exit(0);
         }
-        log.info("Run utility for : {}", utilityType);
-        if (utilityType == UtilityType.P4_PROCESS) {
-            LocalDate date = LocalDate.parse(args[1], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            log.info("Auto Pairing Mode Processing for date:{}", date);
-            applicationContext.getBean(P4Process.class).executeQueries(date);
-        } else if (utilityType == UtilityType.REMINDER_UTILITY) {
-            GenericReminderNotificationProcess.processName = args[1];
-            log.info("Generic Reminder Process for ProcessName:{}", GenericReminderNotificationProcess.processName);
-            UtilityService utilityService = utilityFinderService.getUtility(utilityType);
-            utilityService.runUtility();
-        } else {
-            UtilityService utilityService = utilityFinderService.getUtility(utilityType);
-            utilityService.runUtility();
+        try {
+            log.info("Run utility for : {}", utilityType);
+            if (utilityType == UtilityType.P4_PROCESS) {
+                LocalDate date = LocalDate.parse(args[1], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                log.info("Auto Pairing Mode Processing for date:{}", date);
+                applicationContext.getBean(P4Process.class).executeQueries(date);
+            } else if (utilityType == UtilityType.REMINDER_UTILITY) {
+                GenericReminderNotificationProcess.processName = args[1];
+                log.info("Generic Reminder Process for ProcessName:{}", GenericReminderNotificationProcess.processName);
+                UtilityService utilityService = utilityFinderService.getUtility(utilityType);
+                utilityService.runUtility();
+            } else {
+                UtilityService utilityService = utilityFinderService.getUtility(utilityType);
+                utilityService.runUtility();
+            }
+        } catch (Exception e) {
+
         }
         System.exit(0);
     }
