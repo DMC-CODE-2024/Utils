@@ -22,7 +22,6 @@ public class QueryExecutorService {
     @Autowired
     ModuleAlertService moduleAlertService;
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public Integer execute(String query) {
         long start = System.currentTimeMillis();
         log.info("DB[{}] Going to Execute Query:{}", appConfig.getDbType(), query);
@@ -31,7 +30,6 @@ public class QueryExecutorService {
         return result;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public Integer executeCreate(String query) {
         long start = System.currentTimeMillis();
         try {

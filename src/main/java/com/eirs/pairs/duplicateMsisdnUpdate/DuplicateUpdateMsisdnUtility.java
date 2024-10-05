@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +63,7 @@ public class DuplicateUpdateMsisdnUtility implements UtilityService {
             logger.info("Process:{} will not execute it may already Running or Completed for the day {}", MODULE_NAME, localDate);
             return;
         }
-        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(MODULE_NAME).build());
+        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(MODULE_NAME).featureName(MODULE_NAME).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(MODULE_NAME).build();
         try {
             List<Duplicate> duplicates = duplicateRepository.findByMsisdnIsNull();

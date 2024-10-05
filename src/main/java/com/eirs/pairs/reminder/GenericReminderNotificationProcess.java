@@ -25,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,7 +71,7 @@ public class GenericReminderNotificationProcess {
             log.info("Process:{} will not execute it may already Running or Completed for the day {}", featureName, localDate);
             return;
         }
-        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().moduleName(moduleName).featureName(featureName).build());
+        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(moduleName).featureName(featureName).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(moduleName).featureName(featureName).build();
         try {
             process(0, systemConfigurationService.getGenericReminderFirstNotificationDays());

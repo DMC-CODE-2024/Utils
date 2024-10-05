@@ -66,7 +66,7 @@ public class PairCleanUpUtility implements UtilityService {
             log.info("Process:{} will not execute it may already Running or Completed for the day {}", MODULE_NAME, localDate);
             return;
         }
-        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(MODULE_NAME).build());
+        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(MODULE_NAME).featureName(MODULE_NAME).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(MODULE_NAME).build();
         String selectQuery = appConfig.getDbType() == DBType.MYSQL ? PairCleanQueriesConstants.SELECT_PAIR_MYSQL : PairCleanQueriesConstants.SELECT_PAIR_ORACLE;
         String startRange = LocalDateTime.of(LocalDate.now().minusDays(systemConfigurationService.getManualPairCleanUpDays()), LocalTime.of(0, 0)).format(DateFormatterConstants.simpleDateFormat);

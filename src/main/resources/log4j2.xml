@@ -2,37 +2,25 @@
 <Configuration status="DEBUG">
     <Properties>
 
-        <Property name="app-logs-dir">/home/teamglt/logs/EagleEir</Property>
+        <Property name="app-logs-dir">${env:DATA_HOME}/${sys:module.name}</Property>
+		<Property name="log-file-name">${sys:module.name}</Property>
     </Properties>
     <Appenders>
-        <Console name="LogToConsole" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%C] %-5level - %msg%n"/>
-        </Console>
         <RollingFile name="LogToFile"
-                     fileName="${app-logs-dir}/fcm.log"
-                     filePattern="${app-logs-dir}/fcm-%d{yyyy-MM-dd-HH-mm}-%i.log">
+                     fileName="${app-logs-dir}/${log-file-name}.log"
+                     filePattern="${app-logs-dir}/${log-file-name}-%d{yyyy-MM-dd-HH}-%i.log">
             <PatternLayout>
-                <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%C] %-5level - %msg%n</Pattern>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%C] %-5level - %msg%n</Pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <SizeBasedTriggeringPolicy size="250 MB"/>
             </Policies>
-            <DefaultRolloverStrategy max="200"/>
         </RollingFile>
     </Appenders>
     <Loggers>
-        <!--        <Logger level="WARN" name="org.springframework" />-->
-        <!--        <Logger level="WARN" name="org.jboss" />-->
-        <!--        <Logger level="OFF" name="org.hibernate" />-->
-        <!--        <Logger level="WARN" name="com.company.project.eligibility" />-->
-        <Logger name="com.eirs.pairs" level="info" additivity="false">
-            <AppenderRef ref="LogToFile"/>
-            <AppenderRef ref="LogToConsole"/>
-        </Logger>
         <Root level="info">
             <AppenderRef ref="LogToFile"/>
-            <AppenderRef ref="LogToConsole"/>
         </Root>
 
     </Loggers>

@@ -63,7 +63,7 @@ public class PairingToBlackListUtility implements UtilityService {
             log.info("Process:{} will not execute it may already Running or Completed for the day {}", moduleName, localDate);
             return;
         }
-        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().moduleName(moduleName).featureName(moduleName).build());
+        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(moduleName).featureName(moduleName).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(moduleName).featureName(moduleName).build();
         long start = System.currentTimeMillis();
         String finalQuery = "select a.* from imei_pair_detail a where a.expiry_date < '" + dateTime + "'";

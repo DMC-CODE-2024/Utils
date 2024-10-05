@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -64,6 +66,8 @@ public class P4Process {
         String index4 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_ACTUAL_IMEI_MYSQL : P4QueriesConstants.CREATE_INDEX_ACTUAL_IMEI_ORACLE;
         String index5 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_DEVICE_ACTUAL_IMEI_MYSQL : P4QueriesConstants.CREATE_INDEX_DEVICE_ACTUAL_IMEI_ORACLE;
         String index6 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IMEI_LENGTH_MYSQL : P4QueriesConstants.CREATE_INDEX_IMEI_LENGTH_ORACLE;
+        String index7 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IS_GSMA_VALID_MYSQL : P4QueriesConstants.CREATE_INDEX_IS_GSMA_VALID_MYSQL;
+        String index8 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IS_DUPLICATE_MYSQL : P4QueriesConstants.CREATE_INDEX_IS_DUPLICATE_MYSQL;
         queryExecutorService.executeCreate(index1.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
         queryExecutorService.executeCreate(index1.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
         queryExecutorService.executeCreate(index1.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
@@ -88,9 +92,17 @@ public class P4Process {
         queryExecutorService.executeCreate(index6.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
         queryExecutorService.executeCreate(index6.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
 
+        queryExecutorService.executeCreate(index7.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index7.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index7.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
+
+
+        queryExecutorService.executeCreate(index8.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index8.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index8.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
+
     }
 
-    @Transactional
     private void processAsMySQL(LocalDate localDate) {
         String moduleName = appConfig.getModuleName(UtilityType.P4_PROCESS);
         String edrTableDate = localDate.format(edrTableFormat);
@@ -103,7 +115,7 @@ public class P4Process {
             logger.info("Process:{} will not execute it may already Running or Completed for the day {}", moduleName, localDate);
             return;
         }
-        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().moduleName(moduleName).featureName(moduleName).build());
+        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(moduleName).featureName(moduleName).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(moduleName).featureName(moduleName).build();
         try {
             String gsmaAndDeviceType = P4QueriesConstants.UPDATE_GSMA_AND_DEVICE_TYPE;
@@ -112,13 +124,16 @@ public class P4Process {
             String updateCustomFlag = P4QueriesConstants.UPDATE_CUSTOM_FLAG;
             String updateMsisdn = P4QueriesConstants.UPDATE_MSISDN;
             String updateOperator = P4QueriesConstants.UPDATE_OPERATOR;
+            String updateIsDuplicate = P4QueriesConstants.UPDATE_DUPLICATE_IMEI_RECORDS_MYSQL;
+            String updateIsDuplicateDevice = P4QueriesConstants.UPDATE_DUPLICATE_DEVICE_RECORDS_MYSQL;
             queryExecutorService.execute(gsmaAndDeviceType.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
             queryExecutorService.execute(gsmaLengthInvalid.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
             queryExecutorService.execute(gsmaNonNumericInvalid.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
             queryExecutorService.execute(updateCustomFlag.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
             queryExecutorService.execute(updateMsisdn.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
             queryExecutorService.execute(updateOperator.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
-
+            queryExecutorService.execute(updateIsDuplicate.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+            queryExecutorService.execute(updateIsDuplicateDevice.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
             updateModuleAuditTrail.setStatusCode(200);
             createTableNextDays();
             createIndexes();
@@ -137,7 +152,6 @@ public class P4Process {
         moduleAuditTrailService.updateAudit(updateModuleAuditTrail);
     }
 
-    @Transactional
     private void processAsOracle(LocalDate localDate) {
         String moduleName = appConfig.getModuleName(UtilityType.P4_PROCESS);
         String edrTableDate = localDate.format(edrTableFormat);
@@ -151,7 +165,7 @@ public class P4Process {
             logger.info("Process:{} will not execute it may already Running or Completed for the day {}", moduleName, now);
             return;
         }
-        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().moduleName(moduleName).featureName(moduleName).build());
+        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(moduleName).featureName(moduleName).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(moduleName).featureName(moduleName).build();
         try {
             String gsmaAndDeviceType1 = P4QueriesConstants.UPDATE_GSMA_AND_DEVICE_TYPE_ORACLE_1;

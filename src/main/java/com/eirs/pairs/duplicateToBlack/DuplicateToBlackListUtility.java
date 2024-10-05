@@ -63,7 +63,7 @@ public class DuplicateToBlackListUtility implements UtilityService {
             log.info("Process:{} will not execute it may already Running or Completed for the day {}", MODULE_NAME, localDate);
             return;
         }
-        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(MODULE_NAME).build());
+        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(MODULE_NAME).featureName(MODULE_NAME).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(MODULE_NAME).build();
         String dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0, 0)).format(DateFormatterConstants.simpleDateFormat);
         String finalQuery = "select * from duplicate_device_detail where expiry_date < '" + dateTime + "' and status='DUPLICATE'";

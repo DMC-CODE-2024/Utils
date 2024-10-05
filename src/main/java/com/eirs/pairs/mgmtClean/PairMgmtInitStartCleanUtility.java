@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Service
 public class PairMgmtInitStartCleanUtility implements UtilityService {
@@ -46,7 +47,7 @@ public class PairMgmtInitStartCleanUtility implements UtilityService {
             logger.info("Process:{} will not execute it may already Running or Completed for the day {}", MODULE_NAME, localDate);
             return;
         }
-        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(MODULE_NAME).build());
+        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(MODULE_NAME).featureName(MODULE_NAME).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(MODULE_NAME).build();
 
         String cleanQuery = appConfig.getDbType() == DBType.MYSQL ? PairMgmtInitStartQueriesConstants.MYSQL_UPDATE_MGMT_INIT_TABLE : PairMgmtInitStartQueriesConstants.MYSQL_UPDATE_MGMT_INIT_TABLE;

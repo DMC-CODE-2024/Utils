@@ -9,6 +9,10 @@ public interface P4QueriesConstants {
 
     String UPDATE_GSMA_AND_DEVICE_TYPE = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN mobile_device_repository B ON SUBSTRING(A.actual_imei, 1, 8) = B.device_id set A.is_gsma_valid=1 , A.device_type=B.device_type";
 
+    String UPDATE_DUPLICATE_IMEI_RECORDS_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.duplicate_imei B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_duplicate=1";
+
+    String UPDATE_DUPLICATE_DEVICE_RECORDS_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.duplicate_device_detail B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_duplicate=2 where A.imsi=B.imsi";
+
     String UPDATE_GSMA_LENGTH_INVALID_ORACLE = "update app.edr_" + PARAM_YYYYMMDD + " set is_gsma_valid=0 where length(actual_imei) < 14";
 
     String UPDATE_GSMA_NON_NUMERIC_INVALID_ORACLE = "update app.edr_" + PARAM_YYYYMMDD + " set is_gsma_valid=0 where  REGEXP_LIKE(actual_imei,'[a-zA-Z]')";
@@ -43,6 +47,7 @@ public interface P4QueriesConstants {
             "  operator_name varchar(50) DEFAULT NULL," +
             "  file_name varchar(250) DEFAULT NULL," +
             "  is_gsma_valid int DEFAULT 0," +
+            "  is_duplicate int DEFAULT 0," +
             "  is_custom_paid int DEFAULT 0," +
             "  tac varchar(20) DEFAULT NULL," +
             "  device_type varchar(50) DEFAULT NULL," +
@@ -63,6 +68,7 @@ public interface P4QueriesConstants {
             "operator_name varchar2(50 char), " +
             "protocol varchar2(50 char), " +
             "source varchar2(50 char), " +
+            "is_duplicate number(2,0) DEFAULT 0," +
             "file_name varchar2(250 char), " +
             "is_gsma_valid number(2,0) DEFAULT 0, " +
             "is_custom_paid number(2,0) DEFAULT 0, " +
@@ -75,6 +81,8 @@ public interface P4QueriesConstants {
     String CREATE_INDEX_IMEI_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX((SUBSTRING(actual_imei,1,14)))";
     String CREATE_INDEX_MSISDN_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX((SUBSTRING(msisdn,1,5)))";
     String CREATE_INDEX_ACTUAL_IMEI_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(actual_imei)";
+    String CREATE_INDEX_IS_DUPLICATE_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(is_duplicate)";
+    String CREATE_INDEX_IS_GSMA_VALID_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(is_gsma_valid)";
     String CREATE_INDEX_DEVICE_ACTUAL_IMEI_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(device_type,actual_imei)";
 
 

@@ -47,7 +47,7 @@ public class StolenGreyToBlackProcess {
             logger.info("Process:{} will not execute it may already Running or Completed for the day {}", moduleName, localDate);
             return;
         }
-        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().moduleName(moduleName).featureName(moduleName).build());
+        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(moduleName).featureName(moduleName).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(moduleName).featureName(moduleName).build();
 
         String SELECT_GREY_LIST_EXIST_IN_STOLEN_TABLE = appConfig.getDbType() == DBType.MYSQL ? QueriesConstants.MYSQL_SELECT_GREY_LIST_EXIST_IN_STOLEN_TABLE : QueriesConstants.ORACLE_SELECT_GREY_LIST_EXIST_IN_STOLEN_TABLE;
