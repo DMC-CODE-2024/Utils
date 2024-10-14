@@ -19,7 +19,7 @@ public interface P4QueriesConstants {
 
     String UPDATE_IS_GSMA_WITH_INVALID_IMEI_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.eirs_invalid_imei B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_gsma_valid=0";
 
-    String UPDATE_IS_PAIRED_RECORDS_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.imei_pair_detail B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_paired=1 where A.imsi=B.imsi";
+    String UPDATE_IS_PAIRED_RECORDS_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.imei_pair_detail B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_paired=1 where A.imsi=B.imsi and B.pair_mode='AUTO'";
 
     String UPDATE_GSMA_AND_DEVICE_TYPE_ORACLE_1 = "update app.edr_" + PARAM_YYYYMMDD + " A SET A.device_type = (SELECT device_type FROM mobile_device_repository B WHERE SUBSTR(A.actual_imei, 1, 8) = B.device_id )";
 
@@ -90,6 +90,7 @@ public interface P4QueriesConstants {
     String CREATE_INDEX_MSISDN_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX((SUBSTRING(msisdn,1,5)))";
     String CREATE_INDEX_ACTUAL_IMEI_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(actual_imei)";
     String CREATE_INDEX_IS_DUPLICATE_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(is_duplicate)";
+    String CREATE_INDEX_IS_PAIRED_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(is_paired)";
     String CREATE_INDEX_IS_GSMA_VALID_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(is_gsma_valid)";
     String CREATE_INDEX_DEVICE_ACTUAL_IMEI_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(device_type,actual_imei)";
 
