@@ -25,8 +25,8 @@ public class AppConfig {
     @Value("${feature-name}")
     private String featureName;
 
-    @Value("${dependent.module-name:}")
-    private String dependentModuleName;
+    @Value("${dependent.feature-name:}")
+    private String dependentFeatureName;
 
     @Bean
     public RestTemplate restTemplate() {

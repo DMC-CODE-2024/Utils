@@ -21,14 +21,14 @@
     </properties>
     <modules>
         <module>eirs-common</module>
-        <module>eirs-p4</module>
-        <module>eirs-pair-expiry</module>
-        <module>eirs-pair-clean</module>
-        <module>eirs-pair-update-msisdn</module>
-        <module>eirs-grey-to-black</module>
-        <module>eirs-duplicate-update-msisdn</module>
-        <module>eirs-duplicate-expiry</module>
-        <module>eirs-pair-mgmt-clean</module>
+        <module>etl_edr_p4</module>
+        <module>auto_pairing_expire</module>
+        <module>manual_pairing_clean</module>
+        <module>auto_pairing_msisdn_update</module>
+        <module>lost_stolen_move_blacklist</module>
+        <module>duplicate_msisdn_update</module>
+        <module>duplicate_expire</module>
+        <module>manual_pairing_incomplete_clean</module>
         <module>eirs-reminder-utils</module>
     </modules>
 

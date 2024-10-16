@@ -87,7 +87,6 @@ public class GenericReminderNotificationProcess {
         moduleAuditTrailService.updateAudit(updateModuleAuditTrail);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public void process(Integer reminderStatus, Integer reminderDays) {
         LocalDateTime startDate = LocalDateTime.now().minusDays(reminderDays).withMinute(0).withHour(0).withSecond(0);
         LocalDateTime endDate = startDate.plusDays(1);
