@@ -35,7 +35,7 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         try {
-            GenericReminderNotificationProcess.processName = args[1];
+            GenericReminderNotificationProcess.processName = args[0];
             log.info("Generic Reminder Process for ProcessName:{}", GenericReminderNotificationProcess.processName);
             applicationContext.getBean(GenericReminderNotificationProcess.class).process();
         } catch (Exception e) {

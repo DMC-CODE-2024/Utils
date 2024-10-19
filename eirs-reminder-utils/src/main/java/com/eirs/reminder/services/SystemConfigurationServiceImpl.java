@@ -51,7 +51,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.generic_reminder_first_notification_days;
         String featureName = appConfig.getFeatureName();
         try {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
+            List<SysParam> values =repository.findByConfigKey(key);
             if (CollectionUtils.isEmpty(values)) {
                 moduleAlertService.sendConfigurationMissingAlert(key, featureName);
                 throw new RuntimeException("Configuration missing in sys_param for key " + key);
@@ -69,7 +69,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.generic_reminder_second_notification_days;
         String featureName = appConfig.getFeatureName();
         try {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
+            List<SysParam> values = repository.findByConfigKey(key);
             if (CollectionUtils.isEmpty(values)) {
                 moduleAlertService.sendConfigurationMissingAlert(key, featureName);
                 throw new RuntimeException("Configuration missing in sys_param for key " + key);
@@ -87,7 +87,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.generic_reminder_third_notification_days;
         String featureName = appConfig.getFeatureName();
         try {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
+            List<SysParam> values = repository.findByConfigKey(key);
             if (CollectionUtils.isEmpty(values)) {
                 moduleAlertService.sendConfigurationMissingAlert(key, featureName);
                 throw new RuntimeException("Configuration missing in sys_param for key " + key);
@@ -105,7 +105,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.generic_reminder_table_name;
         String featureName = appConfig.getFeatureName();
         try {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
+            List<SysParam> values = repository.findByConfigKey(key);
             if (CollectionUtils.isEmpty(values)) {
                 moduleAlertService.sendConfigurationMissingAlert(key, featureName);
                 throw new RuntimeException("Configuration missing in sys_param for key " + key);
@@ -123,7 +123,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.generic_reminder_where_clause;
         String featureName = appConfig.getFeatureName();
         try {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
+            List<SysParam> values = repository.findByConfigKey(key);
             if (CollectionUtils.isEmpty(values)) {
                 moduleAlertService.sendConfigurationMissingAlert(key, featureName);
                 throw new RuntimeException("Configuration missing in sys_param for key " + key);
@@ -139,7 +139,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public LocalTime getNotificationSmsStartTime(String moduleName) {
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.notification_sms_start_time;
-        List<SysParam> values = repository.findByConfigKeyAndModule(key, moduleName);
+        List<SysParam> values =repository.findByConfigKey(key);
         if (notificationSmsStartTime == null) {
             if (!CollectionUtils.isEmpty(values)) {
                 String value = values.get(0).getConfigValue();
@@ -163,7 +163,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     public LocalTime getNotificationSmsEndTime(String moduleName) {
         String key = GenericReminderNotificationProcess.processName + "_" + SystemConfigKeys.notification_sms_end_time;
         if (notificationSmsEndTime == null) {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, moduleName);
+            List<SysParam> values = repository.findByConfigKey(key);
             if (!CollectionUtils.isEmpty(values)) {
                 String value = values.get(0).getConfigValue();
                 try {

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SmsConfigurationEntityRepository extends JpaRepository<SmsConfigurationEntity, Long> {
-    SmsConfigurationEntity findByTagAndLanguageAndModule(String tag, NotificationLanguage language, String module);
+    SmsConfigurationEntity findByTagAndLanguage(String tag, NotificationLanguage language);
 }

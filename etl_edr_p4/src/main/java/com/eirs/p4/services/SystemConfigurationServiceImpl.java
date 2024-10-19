@@ -54,7 +54,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
         String key = SystemConfigKeys.edr_table_clean_days;
         String featureName = appConfig.getFeatureName();
         try {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, featureName);
+            List<SysParam> values = repository.findByConfigKey(key);
             if (CollectionUtils.isEmpty(values)) {
                 moduleAlertService.sendConfigurationMissingAlert(key, featureName);
                 throw new RuntimeException("Configuration missing in sys_param for key " + key);

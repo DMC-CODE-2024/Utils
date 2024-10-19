@@ -34,8 +34,7 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         try {
-//            LocalDate date = LocalDate.parse(args[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            LocalDate date = LocalDate.of(2024, 9, 05);
+            LocalDate date = LocalDate.parse(args[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             log.info("P4 Module Starting for date:{}", date);
             applicationContext.getBean(P4Process.class).executeQueries(date);
         } catch (Exception e) {

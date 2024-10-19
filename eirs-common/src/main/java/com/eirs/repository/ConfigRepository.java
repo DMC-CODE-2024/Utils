@@ -11,6 +11,4 @@ public interface ConfigRepository extends JpaRepository<SysParam, Long> {
 
     public List<SysParam> findByConfigKey(String configKey);
 
-    public List<SysParam> findByConfigKeyAndModule(String configKey, String module);
-
 }

@@ -25,7 +25,7 @@ public class SmsConfigurationServiceImpl implements SmsConfigurationService {
     public String getSms(String tag, NotificationLanguage language, String moduleName) {
         String retVal = null;
         try {
-            SmsConfigurationEntity smsConfiguration = smsConfigurationEntityRepository.findByTagAndLanguageAndModule(tag, language, moduleName);
+            SmsConfigurationEntity smsConfiguration = smsConfigurationEntityRepository.findByTagAndLanguage(tag, language);
             if (smsConfiguration == null) {
                 moduleAlertService.sendSmsConfigMissingAlert(tag, moduleName, language.name());
                 retVal = "";

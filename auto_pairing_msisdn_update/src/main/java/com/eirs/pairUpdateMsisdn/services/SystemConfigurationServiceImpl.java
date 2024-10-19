@@ -50,7 +50,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public LocalTime getPairingNotificationSmsStartTime() {
         String key = SystemConfigKeys.pairing_notification_sms_start_time;
-        List<SysParam> values = repository.findByConfigKeyAndModule(key, appConfig.getFeatureName());
+        List<SysParam> values = repository.findByConfigKey(key);
         if (duplicateNotificationSmsStartTime == null) {
             if (!CollectionUtils.isEmpty(values)) {
                 String value = values.get(0).getConfigValue();
@@ -74,7 +74,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     public LocalTime getPairingNotificationSmsEndTime() {
         String key = SystemConfigKeys.pairing_notification_sms_end_time;
         if (pairingNotificationSmsEndTime == null) {
-            List<SysParam> values = repository.findByConfigKeyAndModule(key, appConfig.getFeatureName());
+            List<SysParam> values = repository.findByConfigKey(key);
             if (!CollectionUtils.isEmpty(values)) {
                 String value = values.get(0).getConfigValue();
                 try {
