@@ -59,7 +59,7 @@ public class P4Process {
 
     }
 
-    private void createIndexes() {
+    private void createIndexes(LocalDate edrTableDate) {
         String index1 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_TAC_MYSQL : P4QueriesConstants.CREATE_INDEX_TAC_ORACLE;
         String index2 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_MSISDN_MYSQL : P4QueriesConstants.CREATE_INDEX_MSISDN_ORACLE;
         String index3 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IMEI_MYSQL : P4QueriesConstants.CREATE_INDEX_IMEI_ORACLE;
@@ -69,41 +69,24 @@ public class P4Process {
         String index7 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IS_GSMA_VALID_MYSQL : P4QueriesConstants.CREATE_INDEX_IS_GSMA_VALID_MYSQL;
         String index8 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IS_DUPLICATE_MYSQL : P4QueriesConstants.CREATE_INDEX_IS_DUPLICATE_MYSQL;
         String index9 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IS_PAIRED_MYSQL : P4QueriesConstants.CREATE_INDEX_IS_DUPLICATE_MYSQL;
-        queryExecutorService.executeCreate(index1.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index1.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index1.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
 
-        queryExecutorService.executeCreate(index2.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index2.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index2.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index1.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate.format(edrTableFormat)));
 
-        queryExecutorService.executeCreate(index3.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index3.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index3.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index2.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate.format(edrTableFormat)));
 
-        queryExecutorService.executeCreate(index4.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index4.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index4.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index3.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate.format(edrTableFormat)));
 
-        queryExecutorService.executeCreate(index5.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index5.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index5.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index4.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate.format(edrTableFormat)));
 
-        queryExecutorService.executeCreate(index6.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index6.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index6.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index5.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate.format(edrTableFormat)));
 
-        queryExecutorService.executeCreate(index7.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index7.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index7.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index6.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate.format(edrTableFormat)));
 
-        queryExecutorService.executeCreate(index8.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index8.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index8.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index7.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate.format(edrTableFormat)));
 
-        queryExecutorService.executeCreate(index9.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(1).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index9.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(2).format(edrTableFormat)));
-        queryExecutorService.executeCreate(index9.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, LocalDate.now().plusDays(3).format(edrTableFormat)));
+        queryExecutorService.executeCreate(index8.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate.format(edrTableFormat)));
+
+        queryExecutorService.executeCreate(index9.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate.format(edrTableFormat)));
 
     }
 
@@ -121,6 +104,7 @@ public class P4Process {
         moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build();
         try {
+            createIndexes(localDate);
             String gsmaAndDeviceType = P4QueriesConstants.UPDATE_GSMA_AND_DEVICE_TYPE;
             String gsmaLengthInvalid = P4QueriesConstants.UPDATE_GSMA_LENGTH_INVALID;
             String gsmaNonNumericInvalid = P4QueriesConstants.UPDATE_GSMA_NON_NUMERIC_INVALID;
@@ -142,8 +126,8 @@ public class P4Process {
             queryExecutorService.execute(gsmaInvalidWithInvalidImei.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
             queryExecutorService.execute(updateIsPairedDevice.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
             updateModuleAuditTrail.setStatusCode(200);
-            createTableNextDays();
-            createIndexes();
+//            createTableNextDays();
+//            createIndexes();
             dropEdrTable();
 
         } catch (org.springframework.dao.InvalidDataAccessResourceUsageException e) {
@@ -192,7 +176,7 @@ public class P4Process {
 
             updateModuleAuditTrail.setStatusCode(200);
             createTableNextDays();
-            createIndexes();
+//            createIndexes();
             dropEdrTable();
         } catch (org.springframework.dao.InvalidDataAccessResourceUsageException e) {
             logger.error("Error {}", e.getCause().getMessage(), e);
