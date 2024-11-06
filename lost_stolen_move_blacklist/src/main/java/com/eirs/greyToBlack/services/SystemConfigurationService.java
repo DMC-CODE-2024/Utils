@@ -6,6 +6,5 @@ import java.time.LocalTime;
 
 public interface SystemConfigurationService {
 
-    Integer getStolenGreyToBlackListdays();
 
 }
