@@ -18,11 +18,5 @@ public class AlertDto {
 
     private String alertProcess;
 
-    private String featureName;
-
-    private String priority;
-
-    private String txnid;
-
     private Map<AlertMessagePlaceholders, String> placeHolderMap;
 }
