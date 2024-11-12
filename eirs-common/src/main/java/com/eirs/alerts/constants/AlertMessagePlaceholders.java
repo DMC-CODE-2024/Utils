@@ -1,11 +1,11 @@
 package com.eirs.alerts.constants;
 
 public enum AlertMessagePlaceholders {
-    QUERY("<QUERY>"), EXCEPTION("<EXCEPTION>"),
+    QUERY("QUERY"), EXCEPTION("param_exception"),
 
-    CONFIG_KEY("<CONFIG_KEY>"), CONFIG_VALUE("<CONFIG_VALUE>"),
+    CONFIG_KEY("param_key"), CONFIG_VALUE("param_value"),
 
-    FEATURE_NAME("<FEATURE_NAME>"), LANGUAGE("<LANGUAGE>"), SMS("<SMS>");
+    FEATURE_NAME("param_feature"), LANGUAGE("param_language"), SMS("param_sms");
 
     String placeholder;
 

@@ -70,6 +70,7 @@ public class StolenGreyToBlackProcess {
             moduleAlertService.sendDatabaseAlert(e.getCause().getMessage(), appConfig.getFeatureName());
             updateModuleAuditTrail.setStatusCode(500);
         } catch (Exception e) {
+            moduleAlertService.sendDatabaseAlert(e.getCause().getMessage(), appConfig.getFeatureName());
             logger.error("Error while running Queries ", e);
             updateModuleAuditTrail.setStatusCode(500);
         }

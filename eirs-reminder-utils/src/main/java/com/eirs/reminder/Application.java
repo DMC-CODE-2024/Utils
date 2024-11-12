@@ -1,5 +1,6 @@
 package com.eirs.reminder;
 
+import com.eirs.alerts.AlertServiceImpl;
 import com.eirs.reminder.services.GenericReminderNotificationProcess;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,7 @@ public class Application implements CommandLineRunner {
         } catch (Exception e) {
             log.error("Error while processing Error:{}", e.getMessage(), e);
         }
+        applicationContext.getBean(AlertServiceImpl.class).emptyAlertQueue();
         System.exit(0);
     }
 }

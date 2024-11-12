@@ -37,7 +37,7 @@ public class QueryExecutorService {
             return result;
         } catch (Exception e) {
             log.error("Error while executing TimeTaken:{} Query:{} Error:{}", (System.currentTimeMillis() - start), query, e.getMessage());
-            return -1;
+            throw e;
         }
     }
 

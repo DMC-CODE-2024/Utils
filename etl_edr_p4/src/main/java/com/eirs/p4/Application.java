@@ -1,5 +1,7 @@
 package com.eirs.p4;
 
+import com.eirs.alerts.AlertService;
+import com.eirs.alerts.AlertServiceImpl;
 import com.eirs.p4.services.P4Process;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,7 @@ public class Application implements CommandLineRunner {
         } catch (Exception e) {
             log.error("Error while processing Error:{}", e.getMessage(), e);
         }
+        applicationContext.getBean(AlertServiceImpl.class).emptyAlertQueue();
         System.exit(0);
     }
 }

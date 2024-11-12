@@ -1,5 +1,6 @@
 package com.eirs.pairClean;
 
+import com.eirs.alerts.AlertServiceImpl;
 import com.eirs.pairClean.services.PairCleanUpProcess;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class Application {
         } catch (Exception e) {
             log.error("Error while processing Error:{}", e.getMessage(), e);
         }
+        context.getBean(AlertServiceImpl.class).emptyAlertQueue();
         System.exit(0);
     }
 

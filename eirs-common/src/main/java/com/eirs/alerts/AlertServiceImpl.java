@@ -94,11 +94,26 @@ public class AlertServiceImpl implements AlertService {
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(mapper.toAlertRequest(alertDto), headers);
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(alertConfig.getUrl(), request, String.class);
-            log.info("Alert Sent Request:{}, TimeTaken:{} Response:{}", requestDto, responseEntity, (System.currentTimeMillis() - start));
+            log.info("Alert Sent Request:{}, TimeTaken:{} Response:{}", requestDto, (System.currentTimeMillis() - start), responseEntity);
         } catch (org.springframework.web.client.ResourceAccessException resourceAccessException) {
             log.error("Error while Sending Alert resourceAccessException:{} Request:{}", resourceAccessException.getMessage(), requestDto, resourceAccessException);
         } catch (Exception e) {
             log.error("Error while Sending Alert Error:{} Request:{}", e.getMessage(), requestDto, e);
+        }
+    }
+
+    public void emptyAlertQueue() {
+        log.info("Send All Alerts if queued up");
+        while (true) {
+            try {
+                AlertDto alertDto = queue.poll();
+                if (alertDto == null)
+                    break;
+                log.info("Alert taken from Queue Request:{} QueueSize:{}", alertDto, queue.size());
+                callAlertUrl(alertDto);
+            } catch (Exception e) {
+                log.error("Error while Taking Request from Queue Error:{} ", e.getMessage(), e);
+            }
         }
     }
 }
