@@ -38,7 +38,7 @@ public class PairingExpiryRecordMapper {
         list.setImei(pairing.getImei());
         list.setOperatorName(pairing.getOperator());
         list.setCreatedOn(LocalDateTime.now());
-        list.setSource("PAIRING");
+        list.setSource("auto_pairing_expire");
         return list;
     }
 
@@ -50,7 +50,7 @@ public class PairingExpiryRecordMapper {
         listHis.setOperatorName(pairing.getOperator());
         listHis.setCreatedOn(LocalDateTime.now());
         listHis.setOperation(DeviceSyncOperation.ADD.ordinal());
-        listHis.setSource("PAIRING");
+        listHis.setSource("auto_pairing_expire");
         return listHis;
     }
 }

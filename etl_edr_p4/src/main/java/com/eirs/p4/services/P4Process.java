@@ -175,7 +175,7 @@ public class P4Process {
             queryExecutorService.execute(updateOperator.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
 
             updateModuleAuditTrail.setStatusCode(200);
-            createTableNextDays();
+//            createTableNextDays();
 //            createIndexes();
             dropEdrTable();
         } catch (org.springframework.dao.InvalidDataAccessResourceUsageException e) {
