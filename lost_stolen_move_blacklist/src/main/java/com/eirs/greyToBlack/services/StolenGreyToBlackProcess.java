@@ -49,21 +49,16 @@ public class StolenGreyToBlackProcess {
         moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build();
 
-        String SELECT_GREY_LIST_EXIST_IN_STOLEN_TABLE = appConfig.getDbType() == DBType.MYSQL ? QueriesConstants.MYSQL_SELECT_GREY_LIST_EXIST_IN_STOLEN_TABLE : QueriesConstants.ORACLE_SELECT_GREY_LIST_EXIST_IN_STOLEN_TABLE;
         String INSERT_INTO_GREY_HIS_TABLE = appConfig.getDbType() == DBType.MYSQL ? QueriesConstants.INSERT_INTO_GREY_HIS_TABLE : QueriesConstants.ORACLE_INSERT_INTO_GREY_HIS_TABLE;
         String INSERT_INTO_BLACK_LIST_TABLE = appConfig.getDbType() == DBType.MYSQL ? QueriesConstants.INSERT_INTO_BLACK_LIST_TABLE : QueriesConstants.ORACLE_INSERT_INTO_BLACK_LIST_TABLE;
         String INSERT_INTO_BLACK_LIST_HIS_TABLE = appConfig.getDbType() == DBType.MYSQL ? QueriesConstants.INSERT_INTO_BLACK_LIST_HIS_TABLE : QueriesConstants.ORACLE_INSERT_INTO_BLACK_LIST_HIS_TABLE;
         String nowDate = appConfig.getDbType() == DBType.MYSQL ? "NOW()" : "sysdate";
         try {
             String dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0, 0)).format(DateFormatterConstants.simpleDateFormat);
-            queryExecutorService.execute(QueriesConstants.TRUNCATE_GREY_LIST_TEMP);
-            queryExecutorService.execute(SELECT_GREY_LIST_EXIST_IN_STOLEN_TABLE.replaceAll(QueriesConstants.PARAM_DATE_TIME, dateTime).replaceAll(QueriesConstants.CURRENT_TIME, nowDate));
-            queryExecutorService.execute(INSERT_INTO_GREY_HIS_TABLE.replaceAll(QueriesConstants.PARAM_OPERATION, String.valueOf(DeviceSyncOperation.DELETE.ordinal())));
-            queryExecutorService.execute(INSERT_INTO_BLACK_LIST_TABLE);
-            queryExecutorService.execute(INSERT_INTO_BLACK_LIST_HIS_TABLE.replaceAll(QueriesConstants.PARAM_OPERATION, String.valueOf(DeviceSyncOperation.ADD.ordinal())));
-            Integer deletedCount = queryExecutorService.execute(QueriesConstants.DELETE_FROM_GREY_LIST_TABLE);
-            queryExecutorService.execute(QueriesConstants.TRUNCATE_GREY_LIST_TEMP);
-
+            queryExecutorService.execute(INSERT_INTO_GREY_HIS_TABLE.replaceAll(QueriesConstants.CURRENT_TIME, nowDate).replaceAll(QueriesConstants.PARAM_DATE_TIME, dateTime).replaceAll(QueriesConstants.PARAM_OPERATION, String.valueOf(DeviceSyncOperation.DELETE.ordinal())));
+            queryExecutorService.execute(INSERT_INTO_BLACK_LIST_TABLE.replaceAll(QueriesConstants.CURRENT_TIME, nowDate).replaceAll(QueriesConstants.PARAM_DATE_TIME, dateTime));
+            queryExecutorService.execute(INSERT_INTO_BLACK_LIST_HIS_TABLE.replaceAll(QueriesConstants.CURRENT_TIME, nowDate).replaceAll(QueriesConstants.PARAM_DATE_TIME, dateTime).replaceAll(QueriesConstants.PARAM_OPERATION, String.valueOf(DeviceSyncOperation.ADD.ordinal())));
+            Integer deletedCount = queryExecutorService.execute(QueriesConstants.DELETE_FROM_GREY_LIST_TABLE.replaceAll(QueriesConstants.PARAM_DATE_TIME, dateTime));
             updateModuleAuditTrail.setStatusCode(200);
         } catch (org.springframework.dao.InvalidDataAccessResourceUsageException e) {
             logger.error("Error {}", e.getCause().getMessage(), e);
