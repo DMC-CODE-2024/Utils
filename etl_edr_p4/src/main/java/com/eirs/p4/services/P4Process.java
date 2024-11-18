@@ -48,7 +48,11 @@ public class P4Process {
     private void dropEdrTable() {
         String date = LocalDate.now().minusDays(systemConfigurationService.getEdrTableCleanDays()).format(edrTableFormat);
         String dropTable = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.DROP_EDR_TABLE : P4QueriesConstants.DROP_EDR_TABLE_ORACLE;
-        queryExecutorService.executeCreate(dropTable.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, date));
+        try {
+            queryExecutorService.executeCreate(dropTable.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, date));
+        } catch (Exception e) {
+            logger.error("Error while dropping table:{} Error:{}", dropTable, e.getMessage());
+        }
     }
 
     private void createTableNextDays() {
