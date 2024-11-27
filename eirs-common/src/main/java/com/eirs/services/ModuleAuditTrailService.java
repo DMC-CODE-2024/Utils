@@ -16,9 +16,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.List;
 
 @Service
@@ -48,10 +46,11 @@ public class ModuleAuditTrailService {
                 @Override
                 public ModuleAuditTrail mapRow(ResultSet rs, int rowNum) throws SQLException {
                     ModuleAuditTrail moduleAuditTrail = new ModuleAuditTrail();
-                    moduleAuditTrail.setCreatedOn(rs.getTimestamp("created_on").toLocalDateTime());
+                    moduleAuditTrail.setCreatedOn(LocalDateTime.ofInstant(rs.getDate("created_on").toInstant()
+                            , ZoneId.systemDefault()));
                     moduleAuditTrail.setStatusCode(rs.getInt("status_code"));
                     moduleAuditTrail.setFeatureName(rs.getString("feature_name"));
-                    log.info("ModuleAudiTrail for today's {}", moduleAuditTrail);
+                    log.info("ModuleAuditTrail for today's {}", moduleAuditTrail);
                     return moduleAuditTrail;
                 }
             });
@@ -77,10 +76,11 @@ public class ModuleAuditTrailService {
                 @Override
                 public ModuleAuditTrail mapRow(ResultSet rs, int rowNum) throws SQLException {
                     ModuleAuditTrail moduleAuditTrail = new ModuleAuditTrail();
-                    moduleAuditTrail.setCreatedOn(rs.getTimestamp("created_on").toLocalDateTime());
+                    moduleAuditTrail.setCreatedOn(LocalDateTime.ofInstant(rs.getDate("created_on").toInstant()
+                            , ZoneId.systemDefault()));
                     moduleAuditTrail.setStatusCode(rs.getInt("status_code"));
                     moduleAuditTrail.setFeatureName(rs.getString("feature_name"));
-                    log.info("ModuleAudiTrail for today's {}", moduleAuditTrail);
+                    log.info("ModuleAuditTrail for today's {}", moduleAuditTrail);
                     return moduleAuditTrail;
                 }
             });
