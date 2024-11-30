@@ -30,6 +30,7 @@
         <module>duplicate_expire</module>
         <module>manual_pairing_incomplete_clean</module>
         <module>eirs-reminder-utils</module>
+        <module>blacklist_identifier</module>
     </modules>
 
     <dependencies>

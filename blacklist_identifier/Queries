@@ -1,0 +1,28 @@
+CREATE TABLE aud.black_identify_aud (
+  id int NOT NULL AUTO_INCREMENT,
+  created_on timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_on timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  source varchar(50) DEFAULT '',
+  operator varchar(8) DEFAULT '',
+  actual_imei varchar(50) DEFAULT '',
+  imei varchar(20) DEFAULT '',
+  msisdn varchar(20) DEFAULT '',
+  tac varchar(8) DEFAULT '',
+  file_name varchar(100) DEFAULT NULL,
+  input_source  varchar(50) DEFAULT '',
+  imsi varchar(20) DEFAULT '',
+  blocked_source  varchar(20) DEFAULT '',
+  blocked_date timestamp DEFAULT NULL,
+  is_whitelist int default 0,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
+ALTER TABLE aud.black_identify_aud ADD INDEX(imei,imsi,msisdn);
+
+ALTER TABLE app.active_unique_imei ADD INDEX(CREATED_ON,imei,imsi,msisdn);
+
+ALTER TABLE app.active_imei_with_different_msisdn ADD INDEX(CREATED_ON,imei,imsi,msisdn);
+
+ALTER TABLE app_edr.active_unique_imei ADD INDEX(CREATED_ON,imei,imsi,msisdn);
+
+ALTER TABLE app_edr.active_imei_with_different_imsi ADD INDEX(CREATED_ON,imei,imsi,msisdn);
