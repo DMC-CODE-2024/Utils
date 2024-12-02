@@ -46,8 +46,7 @@ public class ModuleAuditTrailService {
                 @Override
                 public ModuleAuditTrail mapRow(ResultSet rs, int rowNum) throws SQLException {
                     ModuleAuditTrail moduleAuditTrail = new ModuleAuditTrail();
-                    moduleAuditTrail.setCreatedOn(LocalDateTime.ofInstant(rs.getDate("created_on").toInstant()
-                            , ZoneId.systemDefault()));
+                    moduleAuditTrail.setCreatedDate(rs.getDate("created_on"));
                     moduleAuditTrail.setStatusCode(rs.getInt("status_code"));
                     moduleAuditTrail.setFeatureName(rs.getString("feature_name"));
                     log.info("ModuleAuditTrail for today's {}", moduleAuditTrail);
@@ -57,7 +56,7 @@ public class ModuleAuditTrailService {
             long count = trails.stream().filter(trail -> (trail.getStatusCode().intValue() == 200)).count();
             startProcess = (count == 0);
         } catch (Exception e) {
-            log.error("Error:{} while running query:[{}]", e.getMessage(), query);
+            log.error("Error:{} while running query:[{}]", e.getMessage(), query, e);
         }
 
         return startProcess;

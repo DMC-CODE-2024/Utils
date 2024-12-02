@@ -1,7 +1,7 @@
-package com.eirs.p4;
+package com.eirs.blacklist;
 
 import com.eirs.alerts.AlertServiceImpl;
-import com.eirs.p4.services.BlacklistIdentifier;
+import com.eirs.blacklist.services.BlacklistIdentifier;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,8 @@ import java.time.format.DateTimeFormatter;
 @SpringBootApplication
 @EnableEncryptableProperties
 @Slf4j
-@EnableJpaRepositories({"com.eirs.p4","com.eirs.repository"})
-@EntityScan({"com.eirs.p4","com.eirs.repository"})
+@EnableJpaRepositories({"com.eirs.blacklist","com.eirs.repository"})
+@EntityScan({"com.eirs.blacklist","com.eirs.repository"})
 @ComponentScan({"com.eirs"})
 public class BlacklistApplication implements CommandLineRunner {
 

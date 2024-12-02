@@ -31,6 +31,7 @@
         <module>manual_pairing_incomplete_clean</module>
         <module>eirs-reminder-utils</module>
         <module>blacklist_identifier</module>
+        <module>eirs_audit_module</module>
     </modules>
 
     <dependencies>
@@ -57,11 +58,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
             <version>3.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc10</artifactId>
-            <version>19.21.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

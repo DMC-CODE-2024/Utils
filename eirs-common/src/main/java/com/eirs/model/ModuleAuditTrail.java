@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 public class ModuleAuditTrail {
 
     private LocalDateTime createdOn;
+    private Date createdDate;
     private Integer statusCode;
     private String featureName;
     private String moduleName;

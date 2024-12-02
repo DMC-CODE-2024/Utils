@@ -110,6 +110,7 @@ public class DuplicateToBlackListProcess {
         validatePair(duplicateDto);
         validateException(duplicateDto);
         blackListService.addAndUpdate(duplicateDto);
+        queryExecutorService.execute(updateDuplicateQuery.replaceAll("<ID>", String.valueOf(duplicateDto.getId())));
     }
 
     private void validatePair(DuplicateDto duplicateDto) {

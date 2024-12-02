@@ -1,9 +1,8 @@
-package com.eirs.p4.services;
+package com.eirs.blacklist.services;
 
+import com.eirs.blacklist.constant.QueriesConstants;
 import com.eirs.config.AppConfig;
-import com.eirs.constants.DBType;
 import com.eirs.model.ModuleAuditTrail;
-import com.eirs.p4.constant.QueriesConstants;
 import com.eirs.services.ModuleAlertService;
 import com.eirs.services.ModuleAuditTrailService;
 import com.eirs.services.QueryExecutorService;

@@ -1,4 +1,4 @@
-package com.eirs.p4.constant;
+package com.eirs.audit.constant;
 
 public interface QueriesConstants {
     String PARAM_START_RANGE = "<START_RANGE>";
