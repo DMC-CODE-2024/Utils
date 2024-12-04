@@ -37,7 +37,7 @@ public interface SystemConfigKeys {
     String notification_sms_start_time = "reminder_notification_sms_start_time";
 
     String notification_sms_end_time = "reminder_notification_sms_end_time";
-    String default_language = "default_lang";
+    String default_language = "systemDefaultLanguage";
 
 
 }
