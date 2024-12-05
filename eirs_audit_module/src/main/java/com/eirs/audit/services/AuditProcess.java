@@ -9,5 +9,5 @@ import java.util.List;
 public interface AuditProcess {
 
 
-    List<EirsData> process(String operatorEirFilename, LocalDateTime startDate, LocalDateTime endDate, String operator) throws Exception;
+    List<EirsData> process(Integer eirNumber, LocalDateTime startDate, LocalDateTime endDate, String operator) throws Exception;
 }

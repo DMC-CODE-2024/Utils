@@ -29,5 +29,6 @@ public class AlertConfig {
         alertsMapping.put(AlertIds.NOTIFICATION_SEND_EXCEPTION, new AlertConfigDto("alert2205"));
         alertsMapping.put(AlertIds.DATABASE_EXCEPTION, new AlertConfigDto("alert2206"));
         alertsMapping.put(AlertIds.DATABASE_TABLE_EXCEPTION, new AlertConfigDto("alert2206"));
+        alertsMapping.put(AlertIds.FILE_NOT_FOUND_EXCEPTION, new AlertConfigDto("alert2210"));
     }
 }

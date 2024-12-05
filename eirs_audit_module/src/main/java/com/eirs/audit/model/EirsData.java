@@ -4,6 +4,8 @@ import com.eirs.audit.repository.entity.EirlistOutputAuditConstants;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Data
@@ -21,11 +23,19 @@ public class EirsData {
 
     private String listName;
 
+    private String fileName;
+
     private String missingSource;
 
-    public EirsData(String data, String listName, String missingSource) {
+    private String operator;
+
+    private Date listDate;
+
+    public EirsData(String data, String listName, String missingSource, String operator, String fileName) {
         this.listName = listName;
         this.missingSource = missingSource;
+        this.operator = operator;
+        this.fileName = fileName;
         String[] d = data.split(",");
         if (EirlistOutputAuditConstants.BLOCKED_TAC_NAME.equals(listName)) {
             this.tac = d[0];

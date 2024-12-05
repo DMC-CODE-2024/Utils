@@ -70,4 +70,13 @@ public class ModuleAlertService {
         map.put(AlertMessagePlaceholders.LANGUAGE, language);
         alertService.sendAlert(AlertIds.SMS_VALUE_MISSING, map);
     }
+
+    public void sendAuditFileNotFoundAlert(String fileName, String operatorName, Integer operatorEirNumber, String featureName) {
+        Map<AlertMessagePlaceholders, String> map = new HashMap<>();
+        map.put(AlertMessagePlaceholders.FILENAME, fileName);
+        map.put(AlertMessagePlaceholders.FEATURE_NAME, featureName);
+        map.put(AlertMessagePlaceholders.OPERATOR, operatorName);
+        map.put(AlertMessagePlaceholders.EIR_NUMBER, String.valueOf(operatorEirNumber));
+        alertService.sendAlert(AlertIds.FILE_NOT_FOUND_EXCEPTION, map);
+    }
 }

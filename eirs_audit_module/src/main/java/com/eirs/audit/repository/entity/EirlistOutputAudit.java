@@ -3,7 +3,7 @@ package com.eirs.audit.repository.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Entity
@@ -24,9 +24,9 @@ public class EirlistOutputAudit {
 
     private String operator;
 
-    private LocalDateTime createdOn;
+    private java.util.Date createdOn;
 
-    private LocalDateTime modifiedOn;
+    private java.util.Date modifiedOn;
 
     private String missingSource;
 
@@ -34,5 +34,5 @@ public class EirlistOutputAudit {
 
     private String listName;
 
-    private LocalDateTime blockedDate;
+    private Date blockedDate;
 }

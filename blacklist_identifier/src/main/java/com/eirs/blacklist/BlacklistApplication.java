@@ -35,7 +35,7 @@ public class BlacklistApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         try {
-            LocalDate date = LocalDate.parse(args[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalDate date = LocalDate.parse("2024-12-04", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             log.info("P4 Module Starting for date:{}", date);
             applicationContext.getBean(BlacklistIdentifier.class).executeQueries(date);
         } catch (Exception e) {

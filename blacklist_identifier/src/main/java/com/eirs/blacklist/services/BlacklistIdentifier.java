@@ -47,16 +47,25 @@ public class BlacklistIdentifier {
         moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build();
         try {
-            String query1 = QueriesConstants.QUERY_1.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
-            String query2 = QueriesConstants.QUERY_2.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
-            String query3 = QueriesConstants.QUERY_3.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
-            String query4 = QueriesConstants.QUERY_4.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
-            String query5 = QueriesConstants.QUERY_5.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
+            String query1 = QueriesConstants.APP_ACTIVE_UNIQUE_IMEI.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
+            String query2 = QueriesConstants.APP_ACTIVE_UNIQUE_TAC.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
+            String query3 = QueriesConstants.APP_ACTIVE_IMEI_DIFF_MSISDN_IMEI.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
+            String query4 = QueriesConstants.APP_ACTIVE_IMEI_DIFF_MSISDN_TAC.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
+            String query5 = QueriesConstants.APP_EDR_ACTIVE_UNIQUE_IMEI.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
+            String query6 = QueriesConstants.APP_EDR_ACTIVE_UNIQUE_TAC.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
+            String query7 = QueriesConstants.APP_EDR_ACTIVE_IMEI_DIFF_MSISDN_IMEI.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
+            String query8 = QueriesConstants.APP_EDR_ACTIVE_IMEI_DIFF_MSISDN_TAC.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
+            String query9 = QueriesConstants.DELETE_WHITE_LIST_RECORDS.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
+
             queryExecutorService.execute(query1);
             queryExecutorService.execute(query2);
             queryExecutorService.execute(query3);
             queryExecutorService.execute(query4);
             queryExecutorService.execute(query5);
+            queryExecutorService.execute(query6);
+            queryExecutorService.execute(query7);
+            queryExecutorService.execute(query8);
+            queryExecutorService.execute(query9);
             updateModuleAuditTrail.setStatusCode(200);
         } catch (org.springframework.dao.InvalidDataAccessResourceUsageException e) {
             logger.error("Error {}", e.getCause().getMessage(), e);
