@@ -2,38 +2,42 @@ package com.eirs.p4.constant;
 
 public interface P4QueriesConstants {
     String PARAM_YYYYMMDD = "<yyyyMMdd>";
+    String START_ID = "<START_ID>";
 
-    String UPDATE_GSMA_LENGTH_INVALID = "update app.edr_" + PARAM_YYYYMMDD + " set is_gsma_valid=0 where length(actual_imei) < 14";
+    String END_ID = "<END_ID>";
+    String SELECT_MAX_ID_NO = "select max(id) from app.edr_" + PARAM_YYYYMMDD;
 
-    String UPDATE_GSMA_NON_NUMERIC_INVALID = "update app.edr_" + PARAM_YYYYMMDD + " set is_gsma_valid=0 where actual_imei REGEXP '[a-zA-Z]'";
+    String UPDATE_GSMA_LENGTH_INVALID = "update app.edr_" + PARAM_YYYYMMDD + " set is_gsma_valid=0 where ID>" + START_ID + " and ID<=" + END_ID + " and length(actual_imei) < 14";
 
-    String UPDATE_GSMA_AND_DEVICE_TYPE = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN mobile_device_repository B ON SUBSTRING(A.actual_imei, 1, 8) = B.device_id set A.is_gsma_valid=1 , A.device_type=B.device_type";
+    String UPDATE_GSMA_NON_NUMERIC_INVALID = "update app.edr_" + PARAM_YYYYMMDD + " set is_gsma_valid=0 where ID > " + START_ID + " and ID <= " + END_ID + " and actual_imei REGEXP '[a-zA-Z]'";
 
-    String UPDATE_DUPLICATE_IMEI_RECORDS_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.duplicate_imei B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_duplicate=1";
+    String UPDATE_GSMA_AND_DEVICE_TYPE = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN mobile_device_repository B ON SUBSTRING(A.actual_imei, 1, 8) = B.device_id set A.is_gsma_valid=1 , A.device_type=B.device_type where A.ID >" + START_ID + " and A.ID <=" + END_ID;
 
-    String UPDATE_DUPLICATE_DEVICE_RECORDS_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.duplicate_device_detail B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_duplicate=2 where A.imsi=B.imsi";
+    String UPDATE_DUPLICATE_IMEI_RECORDS_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.duplicate_imei B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_duplicate=1 where A.ID >" + START_ID + " and A.ID <=" + END_ID;
+
+    String UPDATE_DUPLICATE_DEVICE_RECORDS_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.duplicate_device_detail B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_duplicate=2 where A.ID >" + START_ID + " and A.ID <=" + END_ID + " and A.imsi=B.imsi";
 
     String UPDATE_GSMA_LENGTH_INVALID_ORACLE = "update app.edr_" + PARAM_YYYYMMDD + " set is_gsma_valid=0 where length(actual_imei) < 14";
 
     String UPDATE_GSMA_NON_NUMERIC_INVALID_ORACLE = "update app.edr_" + PARAM_YYYYMMDD + " set is_gsma_valid=0 where  REGEXP_LIKE(actual_imei,'[a-zA-Z]')";
 
-    String UPDATE_IS_GSMA_WITH_INVALID_IMEI_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.eirs_invalid_imei B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_gsma_valid=0";
+    String UPDATE_IS_GSMA_WITH_INVALID_IMEI_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.eirs_invalid_imei B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_gsma_valid=0 where A.ID >" + START_ID + " and A.ID <=" + END_ID ;
 
-    String UPDATE_IS_PAIRED_RECORDS_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.imei_pair_detail B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_paired=1 where A.imsi=B.imsi and B.pair_mode='AUTO'";
+    String UPDATE_IS_PAIRED_RECORDS_MYSQL = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN app.imei_pair_detail B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_paired=1 where A.ID >" + START_ID + " and A.ID <=" + END_ID + " and A.imsi=B.imsi and B.pair_mode='AUTO'";
 
     String UPDATE_GSMA_AND_DEVICE_TYPE_ORACLE_1 = "update app.edr_" + PARAM_YYYYMMDD + " A SET A.device_type = (SELECT device_type FROM mobile_device_repository B WHERE SUBSTR(A.actual_imei, 1, 8) = B.device_id )";
 
     String UPDATE_GSMA_AND_DEVICE_TYPE_ORACLE_2 = "update app.edr_" + PARAM_YYYYMMDD + " set is_gsma_valid =1 where actual_imei in (select distinct(A.actual_imei) from app.edr_" + PARAM_YYYYMMDD + " A , mobile_device_repository B where SUBSTR(A.actual_imei, 1, 8) = B.device_id)";
 
-    String UPDATE_CUSTOM_FLAG = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN national_whitelist B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_custom_paid=1  where A.is_gsma_valid=1 and B.gdce_imei_status > 0";
+    String UPDATE_CUSTOM_FLAG = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN national_whitelist B ON SUBSTRING(A.actual_imei, 1, 14) = B.imei set A.is_custom_paid=1  where A.ID >" + START_ID + " and A.ID <=" + END_ID + " and  A.is_gsma_valid=1 and B.gdce_imei_status > 0";
 
     String UPDATE_CUSTOM_FLAG_ORACLE = "update app.edr_" + PARAM_YYYYMMDD + " set is_custom_paid=1 where actual_imei in (select distinct(A.actual_imei) from app.edr_" + PARAM_YYYYMMDD + " A , national_whitelist B where SUBSTR(A.actual_imei, 1, 14) = B.imei and B.gdce_imei_status > 0)";
 
-    String UPDATE_MSISDN = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN active_msisdn_list B ON A.imsi = B.imsi set A.msisdn=B.msisdn";
+    String UPDATE_MSISDN = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN active_msisdn_list B ON A.imsi = B.imsi set A.msisdn=B.msisdn where A.ID >" + START_ID + " and A.ID <=" + END_ID;
 
     String UPDATE_MSISDN_ORACLE = "update app.edr_" + PARAM_YYYYMMDD + " A SET A.msisdn=(SELECT MSISDN from active_msisdn_list B WHERE A.imsi = B.imsi )";
 
-    String UPDATE_OPERATOR = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN operator_series B ON SUBSTRING(A.msisdn,1,5) <= B.series_start and SUBSTRING(A.msisdn,1,5) >= B.series_end and series_type='msisdn' set A.operator_name=B.operator_name";
+    String UPDATE_OPERATOR = "update app.edr_" + PARAM_YYYYMMDD + " A INNER JOIN operator_series B ON SUBSTRING(A.msisdn,1,5) <= B.series_start and SUBSTRING(A.msisdn,1,5) >= B.series_end and series_type='msisdn' set A.operator_name=B.operator_name where A.ID >" + START_ID + " and A.ID <=" + END_ID;
 
     String UPDATE_OPERATOR_ORACLE = "update app.edr_" + PARAM_YYYYMMDD + " A SET A.operator_name=(select operator_name from operator_series B where SUBSTR(A.msisdn,1,5) <= B.series_start and SUBSTR(A.msisdn,1,5) >= B.series_end and series_type='msisdn')";
 

@@ -3,6 +3,7 @@ package com.eirs.p4.services;
 import com.eirs.config.AppConfig;
 import com.eirs.constants.DBType;
 import com.eirs.model.ModuleAuditTrail;
+import com.eirs.p4.config.P4AppConfig;
 import com.eirs.p4.constant.P4QueriesConstants;
 import com.eirs.services.ModuleAlertService;
 import com.eirs.services.ModuleAuditTrailService;
@@ -27,6 +28,9 @@ public class P4Process {
 
     @Autowired
     private AppConfig appConfig;
+
+    @Autowired
+    private P4AppConfig p4AppConfig;
     DateTimeFormatter edrTableFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     @Autowired
@@ -109,26 +113,45 @@ public class P4Process {
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build();
         try {
             createIndexes(localDate);
-            String gsmaAndDeviceType = P4QueriesConstants.UPDATE_GSMA_AND_DEVICE_TYPE;
-            String gsmaLengthInvalid = P4QueriesConstants.UPDATE_GSMA_LENGTH_INVALID;
-            String gsmaNonNumericInvalid = P4QueriesConstants.UPDATE_GSMA_NON_NUMERIC_INVALID;
-            String updateCustomFlag = P4QueriesConstants.UPDATE_CUSTOM_FLAG;
-            String updateMsisdn = P4QueriesConstants.UPDATE_MSISDN;
-            String updateOperator = P4QueriesConstants.UPDATE_OPERATOR;
-            String updateIsDuplicate = P4QueriesConstants.UPDATE_DUPLICATE_IMEI_RECORDS_MYSQL;
-            String updateIsDuplicateDevice = P4QueriesConstants.UPDATE_DUPLICATE_DEVICE_RECORDS_MYSQL;
-            String gsmaInvalidWithInvalidImei = P4QueriesConstants.UPDATE_IS_GSMA_WITH_INVALID_IMEI_MYSQL;
-            String updateIsPairedDevice = P4QueriesConstants.UPDATE_IS_PAIRED_RECORDS_MYSQL;
-            queryExecutorService.execute(gsmaAndDeviceType.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
-            queryExecutorService.execute(gsmaLengthInvalid.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
-            queryExecutorService.execute(gsmaNonNumericInvalid.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
-            queryExecutorService.execute(updateCustomFlag.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
-            queryExecutorService.execute(updateMsisdn.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
-            queryExecutorService.execute(updateOperator.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
-            queryExecutorService.execute(updateIsDuplicate.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
-            queryExecutorService.execute(updateIsDuplicateDevice.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
-            queryExecutorService.execute(gsmaInvalidWithInvalidImei.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
-            queryExecutorService.execute(updateIsPairedDevice.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+            String getMaxNoOfRows = P4QueriesConstants.SELECT_MAX_ID_NO.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate);
+            Long maxId = queryExecutorService.getJdbcTemplate().queryForObject(getMaxNoOfRows, Long.class);
+            logger.info("MaxId:{} in EDR table Query:{}", maxId, getMaxNoOfRows);
+            Long batchSize = p4AppConfig.getBatchSize();
+            long noOfBatches = maxId / batchSize;
+            long remainder = maxId % batchSize;
+            if (remainder > 0)
+                noOfBatches++;
+            logger.info("P4 Process started for localDate:{} maxId:{}, batchSize:{}, noOfBatches:{}", localDate, maxId, batchSize, noOfBatches);
+
+            long startId = 0;
+            long endId = batchSize;
+            for (int batch = 1; batch <= noOfBatches; ) {
+                logger.info("Processing for BatchNo:{} noOfBatches:{} startId:{} endId:{}", batch, noOfBatches, startId, endId);
+                String gsmaAndDeviceType = P4QueriesConstants.UPDATE_GSMA_AND_DEVICE_TYPE.replaceAll(P4QueriesConstants.START_ID, String.valueOf(startId)).replaceAll(P4QueriesConstants.END_ID, String.valueOf(endId));
+                String gsmaLengthInvalid = P4QueriesConstants.UPDATE_GSMA_LENGTH_INVALID.replaceAll(P4QueriesConstants.START_ID, String.valueOf(startId)).replaceAll(P4QueriesConstants.END_ID, String.valueOf(endId));
+                String gsmaNonNumericInvalid = P4QueriesConstants.UPDATE_GSMA_NON_NUMERIC_INVALID.replaceAll(P4QueriesConstants.START_ID, String.valueOf(startId)).replaceAll(P4QueriesConstants.END_ID, String.valueOf(endId));
+                String updateCustomFlag = P4QueriesConstants.UPDATE_CUSTOM_FLAG.replaceAll(P4QueriesConstants.START_ID, String.valueOf(startId)).replaceAll(P4QueriesConstants.END_ID, String.valueOf(endId));
+                String updateMsisdn = P4QueriesConstants.UPDATE_MSISDN.replaceAll(P4QueriesConstants.START_ID, String.valueOf(startId)).replaceAll(P4QueriesConstants.END_ID, String.valueOf(endId));
+                String updateOperator = P4QueriesConstants.UPDATE_OPERATOR.replaceAll(P4QueriesConstants.START_ID, String.valueOf(startId)).replaceAll(P4QueriesConstants.END_ID, String.valueOf(endId));
+                String updateIsDuplicate = P4QueriesConstants.UPDATE_DUPLICATE_IMEI_RECORDS_MYSQL.replaceAll(P4QueriesConstants.START_ID, String.valueOf(startId)).replaceAll(P4QueriesConstants.END_ID, String.valueOf(endId));
+                String updateIsDuplicateDevice = P4QueriesConstants.UPDATE_DUPLICATE_DEVICE_RECORDS_MYSQL.replaceAll(P4QueriesConstants.START_ID, String.valueOf(startId)).replaceAll(P4QueriesConstants.END_ID, String.valueOf(endId));
+                String gsmaInvalidWithInvalidImei = P4QueriesConstants.UPDATE_IS_GSMA_WITH_INVALID_IMEI_MYSQL.replaceAll(P4QueriesConstants.START_ID, String.valueOf(startId)).replaceAll(P4QueriesConstants.END_ID, String.valueOf(endId));
+                String updateIsPairedDevice = P4QueriesConstants.UPDATE_IS_PAIRED_RECORDS_MYSQL.replaceAll(P4QueriesConstants.START_ID, String.valueOf(startId)).replaceAll(P4QueriesConstants.END_ID, String.valueOf(endId));
+                queryExecutorService.execute(gsmaAndDeviceType.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+                queryExecutorService.execute(gsmaLengthInvalid.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+                queryExecutorService.execute(gsmaNonNumericInvalid.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+                queryExecutorService.execute(updateCustomFlag.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+                queryExecutorService.execute(updateMsisdn.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+                queryExecutorService.execute(updateOperator.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+                queryExecutorService.execute(updateIsDuplicate.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+                queryExecutorService.execute(updateIsDuplicateDevice.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+                queryExecutorService.execute(gsmaInvalidWithInvalidImei.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+                queryExecutorService.execute(updateIsPairedDevice.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate));
+
+                startId = endId;
+                batch++;
+                endId = (batch * batchSize);
+            }
             updateModuleAuditTrail.setStatusCode(200);
 //            createTableNextDays();
 //            createIndexes();

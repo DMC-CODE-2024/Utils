@@ -75,8 +75,8 @@ public class ModuleAuditTrailService {
                 @Override
                 public ModuleAuditTrail mapRow(ResultSet rs, int rowNum) throws SQLException {
                     ModuleAuditTrail moduleAuditTrail = new ModuleAuditTrail();
-                    moduleAuditTrail.setCreatedOn(LocalDateTime.ofInstant(rs.getDate("created_on").toInstant()
-                            , ZoneId.systemDefault()));
+//                    moduleAuditTrail.setCreatedOn(LocalDateTime.ofInstant(rs.getDate("created_on").toInstant()
+//                            , ZoneId.systemDefault()));
                     moduleAuditTrail.setStatusCode(rs.getInt("status_code"));
                     moduleAuditTrail.setFeatureName(rs.getString("feature_name"));
                     log.info("ModuleAuditTrail for today's {}", moduleAuditTrail);
