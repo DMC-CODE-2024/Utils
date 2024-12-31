@@ -74,9 +74,9 @@ public class P4Process {
         String index4 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_ACTUAL_IMEI_MYSQL : P4QueriesConstants.CREATE_INDEX_ACTUAL_IMEI_ORACLE;
         String index5 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_DEVICE_ACTUAL_IMEI_MYSQL : P4QueriesConstants.CREATE_INDEX_DEVICE_ACTUAL_IMEI_ORACLE;
         String index6 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IMEI_LENGTH_MYSQL : P4QueriesConstants.CREATE_INDEX_IMEI_LENGTH_ORACLE;
-        String index7 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IS_GSMA_VALID_MYSQL : P4QueriesConstants.CREATE_INDEX_IS_GSMA_VALID_MYSQL;
-        String index8 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IS_DUPLICATE_MYSQL : P4QueriesConstants.CREATE_INDEX_IS_DUPLICATE_MYSQL;
-        String index9 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IS_PAIRED_MYSQL : P4QueriesConstants.CREATE_INDEX_IS_DUPLICATE_MYSQL;
+        String index7 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IS_GSMA_VALID_MYSQL : P4QueriesConstants.CREATE_INDEX_IS_GSMA_VALID_ORACLE;
+        String index8 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IS_DUPLICATE_MYSQL : P4QueriesConstants.CREATE_INDEX_IS_DUPLICATE_ORACLE;
+        String index9 = appConfig.getDbType() == DBType.MYSQL ? P4QueriesConstants.CREATE_INDEX_IS_PAIRED_MYSQL : P4QueriesConstants.CREATE_INDEX_IS_PAIRED_ORACLE;
 
         queryExecutorService.executeCreate(index1.replaceAll(P4QueriesConstants.PARAM_YYYYMMDD, edrTableDate.format(edrTableFormat)));
 

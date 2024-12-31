@@ -106,5 +106,9 @@ public interface P4QueriesConstants {
     String CREATE_INDEX_MSISDN_ORACLE = "create index edr_" + PARAM_YYYYMMDD + "_msisdn on app.edr_" + PARAM_YYYYMMDD + " (SUBSTR(msisdn,1,5))";
     String CREATE_INDEX_ACTUAL_IMEI_ORACLE = "create index edr_" + PARAM_YYYYMMDD + "_actual_imei on app.edr_" + PARAM_YYYYMMDD + " (actual_imei)";
 
+    String CREATE_INDEX_IS_GSMA_VALID_ORACLE = "create index edr_" + PARAM_YYYYMMDD + "_gsma_valid on app.edr_" + PARAM_YYYYMMDD + " (is_gsma_valid)";
+
+    String CREATE_INDEX_IS_DUPLICATE_ORACLE = "create index edr_" + PARAM_YYYYMMDD + "_is_duplicate on app.edr_" + PARAM_YYYYMMDD + " (is_duplicate)";
+    String CREATE_INDEX_IS_PAIRED_ORACLE = "create index edr_" + PARAM_YYYYMMDD + "_is_paired on app.edr_" + PARAM_YYYYMMDD + " (is_paired)";
     String CREATE_INDEX_DEVICE_ACTUAL_IMEI_ORACLE = "create index edr_" + PARAM_YYYYMMDD + "_actual_imei on app.edr_" + PARAM_YYYYMMDD + " (device_type,actual_imei)";
 }
