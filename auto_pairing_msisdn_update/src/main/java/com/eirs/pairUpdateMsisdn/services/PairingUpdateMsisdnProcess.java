@@ -54,6 +54,7 @@ public class PairingUpdateMsisdnProcess {
     AppConfig appConfig;
 
     final String MODULE_NAME = "auto_pairing";
+
     @Transactional
     public void runUtility() {
         Integer count = 0;
@@ -66,7 +67,7 @@ public class PairingUpdateMsisdnProcess {
         moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build();
         try {
-            List<Pairing> pairings = pairingRepository.findByMsisdnIsNull();
+            List<Pairing> pairings = pairingRepository.findByMsisdnIsNullOrMsisdn("");
             if (!CollectionUtils.isEmpty(pairings)) {
                 for (Pairing pairing : pairings) {
                     HlrDumpEntity hlrDump = hlrDumpRepository.findByImsi(pairing.getImsi());

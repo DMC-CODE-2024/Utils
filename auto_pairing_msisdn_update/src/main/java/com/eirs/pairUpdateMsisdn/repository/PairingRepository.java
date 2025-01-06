@@ -28,5 +28,5 @@ public interface PairingRepository extends JpaRepository<Pairing, Long> {
 
     List<Pairing> findByMsisdn(String msisdn);
 
-    List<Pairing> findByMsisdnIsNull();
+    List<Pairing> findByMsisdnIsNullOrMsisdn(String msisdn);
 }
