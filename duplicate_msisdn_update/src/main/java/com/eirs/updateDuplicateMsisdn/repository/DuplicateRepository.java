@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface DuplicateRepository extends JpaRepository<Duplicate, Long> {
 
-    List<Duplicate> findByMsisdnIsNull();
+    List<Duplicate> findByMsisdnIsNullOrMsisdn(String msisdn);
 
 }

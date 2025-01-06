@@ -106,6 +106,7 @@ public class PairingExpiryProcess {
         ImeiPairDetailHis imeiPairDetailHis = mapper.toImeiPairDetailHis(pairing);
         imeiPairDetailHis.setAction("DELETE");
         imeiPairDetailHis.setActionRemark("EXPIRED");
+        imeiPairDetailHis.setCreatedOn(LocalDateTime.now());
         imeiPairDetailHis = imeiPairDetailHisRepository.save(imeiPairDetailHis);
         String query = deletePairingQuery.replaceAll("<SYNC_STATUS>", SyncStatus.SYNCED.name()).replaceAll("<ID>", String.valueOf(pairing.getId()));
         queryExecutorService.execute(query);

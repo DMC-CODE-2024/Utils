@@ -67,7 +67,7 @@ public class DuplicateUpdateMsisdnProcess {
         moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build();
         try {
-            List<Duplicate> duplicates = duplicateRepository.findByMsisdnIsNull();
+            List<Duplicate> duplicates = duplicateRepository.findByMsisdnIsNullOrMsisdn("");
             if (!CollectionUtils.isEmpty(duplicates)) {
                 for (Duplicate duplicate : duplicates) {
                     HlrDumpEntity hlrDump = hlrDumpRepository.findByImsi(duplicate.getImsie());
