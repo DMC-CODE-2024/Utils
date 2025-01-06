@@ -20,7 +20,8 @@ public class PairingExpiryRecordMapper {
         pairing.setImsi(resultSet.getString("imsi"));
         pairing.setActualImei(resultSet.getString("actual_imei"));
         pairing.setPairingDate(resultSet.getTimestamp("pairing_date").toLocalDateTime());
-        pairing.setRecordTime(resultSet.getTimestamp("record_time").toLocalDateTime());
+        if (resultSet.getTimestamp("record_time") != null)
+            pairing.setRecordTime(resultSet.getTimestamp("record_time").toLocalDateTime());
         pairing.setPairMode(PairMode.valueOf(resultSet.getString("pair_mode")));
         pairing.setFilename(resultSet.getString("file_name"));
         pairing.setImei(resultSet.getString("imei"));
@@ -28,6 +29,8 @@ public class PairingExpiryRecordMapper {
         pairing.setAllowedDays(resultSet.getInt("allowed_days"));
         pairing.setOperator(resultSet.getString("operator"));
         pairing.setMsisdn(resultSet.getString("msisdn"));
+        if (resultSet.getTimestamp("expiry_date") != null)
+            pairing.setExpiryDate(resultSet.getTimestamp("expiry_date").toLocalDateTime());
         return pairing;
     }
 
