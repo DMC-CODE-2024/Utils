@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface OperatorSeriesRepository extends JpaRepository<OperatorSeries, Long> {
 
-    @Query("select a from OperatorSeries a where a.seriesStart <= :series and a.seriesEnd > :series and seriesType='msisdn'")
+    @Query("select a from OperatorSeries a where a.seriesStart <= :series and a.seriesEnd >= :series and seriesType='msisdn'")
     Optional<OperatorSeries> findAllWithCreationDateTimeBefore(@Param("series") Integer series);
 
 }
