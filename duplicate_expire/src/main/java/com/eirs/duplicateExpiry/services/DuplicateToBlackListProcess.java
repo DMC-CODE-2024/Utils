@@ -58,7 +58,7 @@ public class DuplicateToBlackListProcess {
     @Autowired
     ModuleAlertService moduleAlertService;
 
-    final String moduleName = "duplicate";
+    final String moduleName = "Duplicate";
 
     public void runUtility() {
         long start = System.currentTimeMillis();

@@ -53,7 +53,7 @@ public class DuplicateUpdateMsisdnProcess {
     @Autowired
     AppConfig appConfig;
 
-    final String MODULE_NAME = "duplicate";
+    final String MODULE_NAME = "Duplicate";
 
     @Transactional
     public void runUtility() {
