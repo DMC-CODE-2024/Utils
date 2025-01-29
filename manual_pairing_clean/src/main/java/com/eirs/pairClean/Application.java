@@ -13,6 +13,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.util.concurrent.TimeUnit;
+
 @SpringBootApplication
 @EnableEncryptableProperties
 @Slf4j
@@ -33,7 +35,12 @@ public class Application {
             log.error("Error while processing Error:{}", e.getMessage(), e);
         }
         context.getBean(AlertServiceImpl.class).emptyAlertQueue();
-        System.exit(0);
+        try {
+            TimeUnit.SECONDS.sleep(1);
+            System.exit(0);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
