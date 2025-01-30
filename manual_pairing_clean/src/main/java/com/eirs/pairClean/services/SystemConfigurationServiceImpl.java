@@ -37,10 +37,14 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
 
     @PostConstruct
     public void init() {
-        getDefaultLanguage();
-        getPairingNotificationSmsStartTime();
-        getManualPairCleanUpDays();
-        getPairingNotificationSmsEndTime();
+        try {
+            getDefaultLanguage();
+            getPairingNotificationSmsStartTime();
+            getManualPairCleanUpDays();
+            getPairingNotificationSmsEndTime();
+        } catch (Exception e) {
+            Runtime.getRuntime().halt(1);
+        }
     }
 
     @Override

@@ -31,9 +31,14 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
 
     @PostConstruct
     public void init() {
+        try{
         getDefaultLanguage();
         getEdrTableCleanDays();
+    }catch(Exception e) {
+        Runtime.getRuntime().halt(1);
+        }
     }
+
 
     @Override
     public NotificationLanguage getDefaultLanguage() {
