@@ -35,8 +35,9 @@ public class BlacklistApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         try {
-            LocalDate date = LocalDate.parse(args[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            log.info("P4 Module Starting for date:{}", date);
+//            LocalDate date = LocalDate.parse(args[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalDate date = LocalDate.now();
+            log.info("Blacklist Audi Module Starting for date:{}", date);
             applicationContext.getBean(BlacklistIdentifier.class).executeQueries(date);
         } catch (Exception e) {
             log.error("Error while processing Error:{}", e.getMessage(), e);
