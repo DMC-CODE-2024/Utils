@@ -58,7 +58,7 @@ public class PairingExpiryProcess {
     @Autowired
     AppConfig appConfig;
 
-    final String MODULE_NAME = "auto_pairing";
+    final String MODULE_NAME = "Auto Pairing";
 
     public void runUtility() {
         LocalDate localDate = LocalDate.now();

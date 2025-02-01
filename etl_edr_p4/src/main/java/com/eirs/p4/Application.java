@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EnableEncryptableProperties
@@ -43,6 +44,11 @@ public class Application implements CommandLineRunner {
             log.error("Error while processing Error:{}", e.getMessage(), e);
         }
         applicationContext.getBean(AlertServiceImpl.class).emptyAlertQueue();
-        System.exit(0);
+        try {
+            TimeUnit.SECONDS.sleep(1);
+            System.exit(0);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
