@@ -2,6 +2,7 @@ CREATE TABLE aud.black_identify_aud (
   id int NOT NULL AUTO_INCREMENT,
   created_on timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   modified_on timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  black_list_entry_usage_date  timestamp NULL;
   source varchar(50) DEFAULT '',
   operator varchar(8) DEFAULT '',
   actual_imei varchar(50) DEFAULT '',
