@@ -47,10 +47,26 @@ public class SmsConfigurationServiceImpl implements SmsConfigurationService {
         return getMsg(smsPlaceHolder, sms);
     }
 
-    private String getMsg(Map<SmsPlaceHolders, String> smsPlaceHolder, String msg) {
-        String finalMsg = msg;
-        if (smsPlaceHolder != null) for (SmsPlaceHolders key : smsPlaceHolder.keySet())
-            finalMsg = finalMsg.replaceAll(key.getPlaceHolder(), smsPlaceHolder.get(key));
-        return finalMsg;
+//    private String getMsg(Map<SmsPlaceHolders, String> smsPlaceHolder, String msg) {
+//        String finalMsg = msg;
+//        if (smsPlaceHolder != null) for (SmsPlaceHolders key : smsPlaceHolder.keySet())
+//            finalMsg = finalMsg.replaceAll(key.getPlaceHolder(), smsPlaceHolder.get(key));
+//        return finalMsg;
+//    }
+
+private String getMsg(Map<SmsPlaceHolders, String> smsPlaceHolder, String msg) {
+    String finalMsg = msg;
+    if (smsPlaceHolder != null) {
+        for (SmsPlaceHolders key : smsPlaceHolder.keySet()) {
+            String replacement = smsPlaceHolder.get(key);
+            if (replacement != null) {
+                finalMsg = finalMsg.replaceAll(key.getPlaceHolder(), replacement);
+            } else {
+                finalMsg = finalMsg.replaceAll(key.getPlaceHolder(), "");
+            }
+        }
     }
+    return finalMsg;
+    }
+
 }

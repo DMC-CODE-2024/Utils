@@ -53,7 +53,7 @@ public class PairingUpdateMsisdnProcess {
     @Autowired
     AppConfig appConfig;
 
-    final String MODULE_NAME = "Auto Pairing";
+    final String MODULE_NAME = "auto_pairing";
 
     @Transactional
     public void runUtility() {

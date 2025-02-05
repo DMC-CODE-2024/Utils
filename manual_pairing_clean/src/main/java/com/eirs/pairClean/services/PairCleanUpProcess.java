@@ -48,7 +48,7 @@ public class PairCleanUpProcess {
     @Autowired
     ModuleAlertService moduleAlertService;
 
-    final String MODULE_NAME = "Manual Pairing";
+    final String MODULE_NAME = "manual_pairing";
 
     public void runUtility() {
         long start = System.currentTimeMillis();
