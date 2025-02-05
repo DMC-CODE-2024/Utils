@@ -6,6 +6,7 @@ import com.eirs.repository.ConfigRepository;
 import com.eirs.repository.entity.SysParam;
 import com.eirs.repository.entity.SystemConfigKeys;
 import com.eirs.services.ModuleAlertService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
 
     LocalTime duplicateNotificationSmsEndTime;
 
+    Boolean sendDuplicationNotification;
     @Autowired
     private ModuleAlertService moduleAlertService;
 
@@ -92,4 +94,23 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
         return duplicateNotificationSmsEndTime;
     }
 
+    @Override
+    public Boolean sendDuplicationNotificationFlag() {
+        String key = SystemConfigKeys.send_duplication_notification_flag;
+        if (sendDuplicationNotification == null) {
+            List<SysParam> values = repository.findByConfigKey(key);
+            if (!CollectionUtils.isEmpty(values)) {
+                String value = values.get(0).getConfigValue();
+                if (StringUtils.equalsAnyIgnoreCase(value, "YES", "TRUE"))
+                    sendDuplicationNotification = Boolean.TRUE;
+                else
+                    sendDuplicationNotification = Boolean.FALSE;
+            } else {
+                moduleAlertService.sendConfigurationMissingAlert(key, appConfig.getFeatureName());
+                log.error("Configuration missing in Sys_param table key:{} featureName:{}", key, appConfig.getFeatureName());
+                throw new RuntimeException("Configuration missing in sys_param for key " + key);
+            }
+        }
+        return sendDuplicationNotification;
+    }
 }

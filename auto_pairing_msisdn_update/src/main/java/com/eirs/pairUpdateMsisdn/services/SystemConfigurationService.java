@@ -12,4 +12,5 @@ public interface SystemConfigurationService {
 
     LocalTime getPairingNotificationSmsEndTime();
 
+    Boolean sendPairingNotificationFlag();
 }

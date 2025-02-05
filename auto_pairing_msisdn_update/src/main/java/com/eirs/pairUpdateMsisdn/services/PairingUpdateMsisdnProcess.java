@@ -95,23 +95,25 @@ public class PairingUpdateMsisdnProcess {
     }
 
     private void sendNotifications(Pairing pairing) {
-        try {
-            logger.info("Sending Notification for Record {}", pairing);
-            Map<SmsPlaceHolders, String> map = new HashMap<>();
-            map.put(SmsPlaceHolders.ACTUAL_IMEI, pairing.getActualImei());
-            map.put(SmsPlaceHolders.IMSI, pairing.getImsi());
-            map.put(SmsPlaceHolders.MSISDN, pairing.getMsisdn());
-            NotificationDetailsDto notificationDetailsDto = null;
-            if (pairing.getGsmaStatus() == GSMAStatus.VALID) {
-                notificationDetailsDto = NotificationDetailsDto.builder().msisdn(pairing.getMsisdn()).smsTag(SmsTag.AutoPairGsmaValidSMS.name()).smsPlaceHolder(map).language(systemConfigurationService.getDefaultLanguage()).moduleName(appConfig.getFeatureName()).build();
-            } else {
-                notificationDetailsDto = NotificationDetailsDto.builder().msisdn(pairing.getMsisdn()).smsTag(SmsTag.AutoPairGsmaInvalidSMS.name()).smsPlaceHolder(map).language(systemConfigurationService.getDefaultLanguage()).moduleName(appConfig.getFeatureName()).build();
+        if (systemConfigurationService.sendPairingNotificationFlag()) {
+            try {
+                logger.info("Sending Notification for Record {}", pairing);
+                Map<SmsPlaceHolders, String> map = new HashMap<>();
+                map.put(SmsPlaceHolders.ACTUAL_IMEI, pairing.getActualImei());
+                map.put(SmsPlaceHolders.IMSI, pairing.getImsi());
+                map.put(SmsPlaceHolders.MSISDN, pairing.getMsisdn());
+                NotificationDetailsDto notificationDetailsDto = null;
+                if (pairing.getGsmaStatus() == GSMAStatus.VALID) {
+                    notificationDetailsDto = NotificationDetailsDto.builder().msisdn(pairing.getMsisdn()).smsTag(SmsTag.AutoPairGsmaValidSMS.name()).smsPlaceHolder(map).language(systemConfigurationService.getDefaultLanguage()).moduleName(appConfig.getFeatureName()).build();
+                } else {
+                    notificationDetailsDto = NotificationDetailsDto.builder().msisdn(pairing.getMsisdn()).smsTag(SmsTag.AutoPairGsmaInvalidSMS.name()).smsPlaceHolder(map).language(systemConfigurationService.getDefaultLanguage()).moduleName(appConfig.getFeatureName()).build();
+                }
+                notificationDetailsDto.setStartTime(systemConfigurationService.getPairingNotificationSmsStartTime());
+                notificationDetailsDto.setEndTime(systemConfigurationService.getPairingNotificationSmsEndTime());
+                notificationService.sendSmsInWindow(notificationDetailsDto);
+            } catch (NotificationException e) {
+                logger.error("Notification not send for duplicate:{} Error:{}", pairing, e.getMessage());
             }
-            notificationDetailsDto.setStartTime(systemConfigurationService.getPairingNotificationSmsStartTime());
-            notificationDetailsDto.setEndTime(systemConfigurationService.getPairingNotificationSmsEndTime());
-            notificationService.sendSmsInWindow(notificationDetailsDto);
-        } catch (NotificationException e) {
-            logger.error("Notification not send for duplicate:{} Error:{}", pairing, e.getMessage());
         }
     }
 }

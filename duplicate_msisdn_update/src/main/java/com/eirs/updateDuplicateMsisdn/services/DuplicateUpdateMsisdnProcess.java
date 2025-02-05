@@ -97,23 +97,26 @@ public class DuplicateUpdateMsisdnProcess {
 
     private void sendNotifications(Duplicate duplicate) {
         try {
-            logger.info("Sending Notification for Record {}", duplicate);
-            Map<SmsPlaceHolders, String> map = new HashMap<>();
-            map.put(SmsPlaceHolders.ACTUAL_IMEI, duplicate.getActualImei());
-            map.put(SmsPlaceHolders.IMSI, duplicate.getImsie());
-            map.put(SmsPlaceHolders.OPERATOR, duplicate.getOperator());
-            map.put(SmsPlaceHolders.IMSI, duplicate.getImsie());
-            map.put(SmsPlaceHolders.IMEI, duplicate.getImei());
-            map.put(SmsPlaceHolders.REQUEST_ID, duplicate.getTransactionId());
-            map.put(SmsPlaceHolders.MSISDN, duplicate.getMsisdn());
-            map.put(SmsPlaceHolders.DATE_DD_MMM_YYYY, notificationSmsDateFormat.format(duplicate.getExpiryDate()));
-            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(duplicate.getMsisdn()).smsTag(SmsTag.DuplicateSms.name()).smsPlaceHolder(map).language(systemConfigurationService.getDefaultLanguage()).moduleName(appConfig.getFeatureName()).build();
-            notificationDetailsDto.setStartTime(systemConfigurationService.getDuplicateNotificationSmsStartTime());
-            notificationDetailsDto.setEndTime(systemConfigurationService.getDuplicateNotificationSmsEndTime());
-            notificationService.sendSmsInWindow(notificationDetailsDto);
+            if (systemConfigurationService.sendDuplicationNotificationFlag()) {
+                logger.info("Sending Notification for Record {}", duplicate);
+                Map<SmsPlaceHolders, String> map = new HashMap<>();
+                map.put(SmsPlaceHolders.ACTUAL_IMEI, duplicate.getActualImei());
+                map.put(SmsPlaceHolders.IMSI, duplicate.getImsie());
+                map.put(SmsPlaceHolders.OPERATOR, duplicate.getOperator());
+                map.put(SmsPlaceHolders.IMSI, duplicate.getImsie());
+                map.put(SmsPlaceHolders.IMEI, duplicate.getImei());
+                map.put(SmsPlaceHolders.REQUEST_ID, duplicate.getTransactionId());
+                map.put(SmsPlaceHolders.MSISDN, duplicate.getMsisdn());
+                map.put(SmsPlaceHolders.DATE_DD_MMM_YYYY, notificationSmsDateFormat.format(duplicate.getExpiryDate()));
+                NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(duplicate.getMsisdn()).smsTag(SmsTag.DuplicateSms.name()).smsPlaceHolder(map).language(systemConfigurationService.getDefaultLanguage()).moduleName(appConfig.getFeatureName()).build();
+                notificationDetailsDto.setStartTime(systemConfigurationService.getDuplicateNotificationSmsStartTime());
+                notificationDetailsDto.setEndTime(systemConfigurationService.getDuplicateNotificationSmsEndTime());
+                notificationService.sendSmsInWindow(notificationDetailsDto);
+            }
         } catch (NotificationException e) {
             logger.error("Notification not send for duplicate:{} Error:{}", duplicate, e.getMessage());
         }
+
     }
 }
 
