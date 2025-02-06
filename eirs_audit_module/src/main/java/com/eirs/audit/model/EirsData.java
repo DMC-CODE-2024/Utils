@@ -31,11 +31,14 @@ public class EirsData {
 
     private Date listDate;
 
-    public EirsData(String data, String listName, String missingSource, String operator, String fileName) {
+    private Integer eirNumber;
+
+    public EirsData(String data, String listName, String missingSource, String operator, String fileName, Integer eirNumber) {
         this.listName = listName;
         this.missingSource = missingSource;
         this.operator = operator;
         this.fileName = fileName;
+        this.eirNumber = eirNumber;
         String[] d = data.split(",");
         if (EirlistOutputAuditConstants.BLOCKED_TAC_NAME.equals(listName)) {
             this.tac = d[0];

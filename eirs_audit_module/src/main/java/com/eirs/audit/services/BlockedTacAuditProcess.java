@@ -47,9 +47,9 @@ public class BlockedTacAuditProcess implements AuditProcess {
         logger.info("Reading file EIRs file:{}", (filepath + filename));
         try (Stream<String> stream = Files.lines(Paths.get(filepath + filename))) {
             stream.skip(1).forEach(data -> {
-                eirsDataSet.put(new EirsData(data, EirlistOutputAuditConstants.BLOCKED_TAC_NAME, EirlistOutputAuditConstants.EIRS_SOURCE, operator, filename), Boolean.TRUE);
+                eirsDataSet.put(new EirsData(data, EirlistOutputAuditConstants.BLOCKED_TAC_NAME, EirlistOutputAuditConstants.EIRS_SOURCE, operator, filename, 0), Boolean.TRUE);
             });
-
+            logger.info("Reading file EIRs file:{} Total Count:{}", (filepath + filename), eirsDataSet.size());
         } catch (Exception e) {
             logger.error("Exception while Reading filepath:{} filename:{} Error:{}", filepath, filename, e.getMessage());
             moduleAlertService.sendAuditFileNotFoundAlert(filename, operator, 0, appConfig.getFeatureName());
@@ -65,7 +65,7 @@ public class BlockedTacAuditProcess implements AuditProcess {
         Map<EirsData, Boolean> eirDataSet = new HashMap<>();
         logger.info("Reading file EIR operatorEirFilename:{}", (operatorFilePath + "/" + operatorEirFilename));
         try (Stream<String> stream = Files.lines(Paths.get(operatorFilePath + "/" + operatorEirFilename))) {
-            stream.skip(1).forEach(data -> eirDataSet.put(new EirsData(data, EirlistOutputAuditConstants.BLOCKED_TAC_NAME, EirlistOutputAuditConstants.EIR_SOURCE, operator, operatorEirFilename), Boolean.TRUE));
+            stream.skip(1).forEach(data -> eirDataSet.put(new EirsData(data, EirlistOutputAuditConstants.BLOCKED_TAC_NAME, EirlistOutputAuditConstants.EIR_SOURCE, operator, operatorEirFilename, eirNumber), Boolean.TRUE));
             eirDataSet.forEach((eirData, value) -> {
                 if (!eirsDataSet.containsKey(eirData)) {
                     missingRecords.add(eirData);

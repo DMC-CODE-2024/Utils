@@ -24,6 +24,7 @@ public class AuditTableMapper {
             audit.setFileName(data.getFileName());
             audit.setListName(data.getListName());
             audit.setBlockedDate(data.getListDate());
+            audit.setEirNo(data.getEirNumber());
             list.add(audit);
         }
         return list;

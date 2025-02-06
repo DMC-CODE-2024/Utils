@@ -35,4 +35,6 @@ public class EirlistOutputAudit {
     private String listName;
 
     private Date blockedDate;
+
+    private Integer eirNo;
 }

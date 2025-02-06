@@ -4,6 +4,7 @@ CREATE TABLE aud.eirlist_output_aud (
   imei varchar(20) DEFAULT '',
   msisdn varchar(20) DEFAULT '',
   imsi varchar(20) DEFAULT '',
+  eir_no int NOT NULL,
   actual_imei varchar(20) DEFAULT '',
   created_on timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   modified_on timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -19,12 +20,13 @@ insert into sys_param(tag,value,feature_name) values  ('AUDIT_NO_OF_OPERATORS','
 	insert into sys_param(tag,value,feature_name)  values  ('AUDIT_OPERATORS_1','SMART','eirs_audit_module');
 	insert into sys_param(tag,value,feature_name)  values  ('AUDIT_OPERATORS_2','METFONE','eirs_audit_module');
 
+// Don't insert if already exist
 	insert into sys_param(tag,value,feature_name)  values  ('SMART_SHORT_CODE','SM','eirs_audit_module');
 	insert into sys_param(tag,value,feature_name)  values  ('METFONE_SHORT_CODE','ME','eirs_audit_module');
 
 	insert into sys_param(tag,value,feature_name)  values  ('AUDIT_SMART_NO_EIRS','2','eirs_audit_module');
-	insert into sys_param(tag,value,feature_name)  values  ('AUDIT_SMART_FILE_PATH_1','D:/','eirs_audit_module');
-	insert into sys_param(tag,value,feature_name)  values  ('AUDIT_SMART_FILE_PATH_2','D:/','eirs_audit_module');
+	insert into sys_param(tag,value,feature_name)  values  ('AUDIT_SMART_FILE_PATH_1','D:/FILES/','eirs_audit_module');
+	insert into sys_param(tag,value,feature_name)  values  ('AUDIT_SMART_FILE_PATH_2','D:/FILES/','eirs_audit_module');
 
 	insert into sys_param(tag,value,feature_name)  values  ('AUDIT_METFONE_NO_EIRS','1','eirs_audit_module');
-	insert into sys_param(tag,value,feature_name)  values  ('AUDIT_METFONE_FILE_PATH_1','D:/','eirs_audit_module');
+	insert into sys_param(tag,value,feature_name)  values  ('AUDIT_METFONE_FILE_PATH_1','D:/FILES/','eirs_audit_module');
