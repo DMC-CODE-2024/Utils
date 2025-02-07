@@ -40,7 +40,7 @@ public class BlackListAuditProcess implements AuditProcess {
     private ModuleAlertService moduleAlertService;
     private Map<EirsData, Boolean> eirsDataSet = new HashMap<>();
 
-    public void fillEirsData(String operator, LocalDateTime startDate, LocalDateTime endDate) {
+    public void fillEirsData(String operator, LocalDateTime startDate, LocalDateTime endDate) throws Exception {
         eirsDataSet.clear();
         String shortCode = systemConfigurationService.getShortCode(operator);
         String filename = FileNameUtil.getFilename(startDate, endDate, FileType.DAILY_FULL, filePrefix, shortCode);
@@ -54,15 +54,15 @@ public class BlackListAuditProcess implements AuditProcess {
         } catch (Exception e) {
             logger.error("Exception while Reading filepath:{} filename:{} Error:{}", filepath, filename, e.getMessage());
             moduleAlertService.sendAuditFileNotFoundAlert(filename, operator, 0, appConfig.getFeatureName());
+            throw e;
         }
     }
 
-    public List<EirsData> process(Integer eirNumber, LocalDateTime startDate, LocalDateTime endDate, String operator) {
+    public List<EirsData> process(Integer eirNumber, LocalDateTime startDate, LocalDateTime endDate, String operator) throws Exception{
         logger.info("Process starting for ListName:{}", filePrefix);
         String operatorFilePath = systemConfigurationService.findByKey(AuditSystemConfigKeys.OPERATOR_FILE_PATH.replaceAll("<OPERATOR>", operator).replaceAll("<NUMBER>", String.valueOf(eirNumber)));
         String operatorEirFilename = "EIR_" + filePrefix + "_" + operator.toUpperCase() + "_" + DateFormatterConstants.eirFilePreDateFormat.format(startDate) + ".csv";
         List<EirsData> missingRecords = new ArrayList<>();
-        fillEirsData(operator, startDate, endDate);
         Map<EirsData, Boolean> eirDataSet = new HashMap<>();
         logger.info("Reading file EIR operatorEirFilename:{}", (operatorFilePath + "/" + operatorEirFilename));
         try (Stream<String> stream = Files.lines(Paths.get(operatorFilePath + "/" + operatorEirFilename))) {
@@ -81,6 +81,7 @@ public class BlackListAuditProcess implements AuditProcess {
         } catch (Exception e) {
             logger.error("Exception while Reading operatorEirFilename:{} Error:{}", operatorEirFilename, e.getMessage());
             moduleAlertService.sendAuditFileNotFoundAlert(operatorEirFilename, operator, eirNumber, appConfig.getFeatureName());
+            throw e;
         }
         return missingRecords;
     }

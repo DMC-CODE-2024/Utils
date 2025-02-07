@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface AuditProcess {
 
+    void fillEirsData(String operator, LocalDateTime startDate, LocalDateTime endDate) throws Exception;
 
     List<EirsData> process(Integer eirNumber, LocalDateTime startDate, LocalDateTime endDate, String operator) throws Exception;
 }

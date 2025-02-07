@@ -2,6 +2,7 @@ package com.eirs.audit;
 
 import com.eirs.alerts.AlertServiceImpl;
 import com.eirs.audit.orchestrator.AuditOrchestrator;
+import com.eirs.audit.services.SystemConfigurationService;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,23 @@ public class AuditApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         try {
-            LocalDate date = LocalDate.parse("2025-01-19", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            log.info("P4 Module Starting for date:{}", date);
-            applicationContext.getBean(AuditOrchestrator.class).processAudit(date);
+            LocalDate date = LocalDate.parse("2025-01-20", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            log.info("Audit Module Starting for date:{}", date);
+            String selectedOperator = null;
+            try {
+                String opArgs = args[1];
+                if (AuditOrchestrator.ALL_OPERATOR.equalsIgnoreCase(opArgs))
+                    selectedOperator = AuditOrchestrator.ALL_OPERATOR;
+                else {
+                    applicationContext.getBean(SystemConfigurationService.class).getOperators().stream()
+                            .filter(operator -> opArgs.equalsIgnoreCase(operator))
+                            .findAny().orElseThrow(() -> new Exception("Operator Arg is wrong / doesn't Exist"));
+                    selectedOperator = opArgs;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                selectedOperator = AuditOrchestrator.ALL_OPERATOR;
+            }
+            applicationContext.getBean(AuditOrchestrator.class).processAudit(date, selectedOperator);
         } catch (Exception e) {
             log.error("Error while processing Error:{}", e.getMessage(), e);
         }
