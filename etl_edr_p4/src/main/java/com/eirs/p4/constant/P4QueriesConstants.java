@@ -88,15 +88,15 @@ public interface P4QueriesConstants {
             "device_type varchar2(50 char), " +
             "UNIQUE (actual_imei,imsi)," +
             "PRIMARY KEY (id))";
-    String CREATE_INDEX_TAC_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX((SUBSTRING(actual_imei,1,8)))";
-    String CREATE_INDEX_IMEI_LENGTH_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX((length(actual_imei)))";
-    String CREATE_INDEX_IMEI_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX((SUBSTRING(actual_imei,1,14)))";
-    String CREATE_INDEX_MSISDN_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX((SUBSTRING(msisdn,1,5)))";
-    String CREATE_INDEX_ACTUAL_IMEI_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(actual_imei)";
-    String CREATE_INDEX_IS_DUPLICATE_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(is_duplicate)";
-    String CREATE_INDEX_IS_PAIRED_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(is_paired)";
-    String CREATE_INDEX_IS_GSMA_VALID_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(is_gsma_valid)";
-    String CREATE_INDEX_DEVICE_ACTUAL_IMEI_MYSQL = "ALTER TABLE app.edr_" + PARAM_YYYYMMDD + " ADD INDEX(device_type,actual_imei)";
+    String CREATE_INDEX_TAC_MYSQL = "CREATE INDEX substr_actual_imei_8 ON app.edr_" + PARAM_YYYYMMDD + " ((SUBSTRING(actual_imei,1,8)))";
+    String CREATE_INDEX_IMEI_LENGTH_MYSQL = "CREATE INDEX length_actual_imei ON app.edr_" + PARAM_YYYYMMDD + " ((length(actual_imei)))";
+    String CREATE_INDEX_IMEI_MYSQL = "CREATE INDEX substr_actual_imei_14 ON app.edr_" + PARAM_YYYYMMDD + " ((SUBSTRING(actual_imei,1,14)))";
+    String CREATE_INDEX_MSISDN_MYSQL = "CREATE INDEX substr_actual_imei_5 ON app.edr_" + PARAM_YYYYMMDD + " ((SUBSTRING(msisdn,1,5)))";
+    String CREATE_INDEX_ACTUAL_IMEI_MYSQL = "CREATE INDEX actual_imei ON app.edr_" + PARAM_YYYYMMDD + " (actual_imei)";
+    String CREATE_INDEX_IS_DUPLICATE_MYSQL = "CREATE INDEX is_duplicate ON app.edr_" + PARAM_YYYYMMDD + " (is_duplicate)";
+    String CREATE_INDEX_IS_PAIRED_MYSQL = "CREATE INDEX is_paired ON app.edr_" + PARAM_YYYYMMDD + " (is_paired)";
+    String CREATE_INDEX_IS_GSMA_VALID_MYSQL = "CREATE INDEX is_gsma_valid ON app.edr_" + PARAM_YYYYMMDD + " (is_gsma_valid)";
+    String CREATE_INDEX_DEVICE_ACTUAL_IMEI_MYSQL = "CREATE INDEX device_type_actual_imei ON app.edr_" + PARAM_YYYYMMDD + " (device_type,actual_imei)";
 
 
     String CREATE_INDEX_TAC_ORACLE = "create index edr_" + PARAM_YYYYMMDD + "_tac on app.edr_" + PARAM_YYYYMMDD + " (SUBSTR(actual_imei,1,8))";

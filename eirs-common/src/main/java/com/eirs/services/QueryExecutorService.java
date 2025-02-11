@@ -36,8 +36,8 @@ public class QueryExecutorService {
             log.info("DB[{}] Executed TimeTaken:{} Result:{} Query:{}", appConfig.getDbType(), (System.currentTimeMillis() - start), result, query);
             return result;
         } catch (Exception e) {
-            log.error("Error while executing TimeTaken:{} Query:{} Error:{}", (System.currentTimeMillis() - start), query, e.getMessage());
-            throw e;
+            log.error("Error while executing TimeTaken:{} Query:{} Error:{}", (System.currentTimeMillis() - start), query, e.getCause().getMessage());
+            return -1;
         }
     }
 

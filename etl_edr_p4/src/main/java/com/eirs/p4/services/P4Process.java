@@ -117,7 +117,7 @@ public class P4Process {
             Long maxId = queryExecutorService.getJdbcTemplate().queryForObject(getMaxNoOfRows, Long.class);
             logger.info("MaxId:{} in EDR table Query:{}", maxId, getMaxNoOfRows);
             Long batchSize = p4AppConfig.getBatchSize();
-            long noOfBatches = maxId / batchSize;
+            long noOfBatches = (maxId == null ? 0 : maxId) / batchSize;
             long remainder = maxId % batchSize;
             if (remainder > 0)
                 noOfBatches++;
