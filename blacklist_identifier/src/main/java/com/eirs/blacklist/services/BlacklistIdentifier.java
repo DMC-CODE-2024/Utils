@@ -38,7 +38,7 @@ public class BlacklistIdentifier {
     @Autowired
     private ModuleAlertService moduleAlertService;
 
-    final String MODULE_NAME = "eir_validator";
+    final String MODULE_NAME = "blacklist identify";
 
     public void executeQueries(LocalDate localDate) {
         String startDate = localDate.format(edrTableFormat);
@@ -142,11 +142,11 @@ public class BlacklistIdentifier {
         } catch (org.springframework.dao.InvalidDataAccessResourceUsageException e) {
             logger.error("Error {}", e.getCause().getMessage(), e);
             moduleAlertService.sendDatabaseAlert(e.getCause().getMessage(), appConfig.getFeatureName());
-            updateModuleAuditTrail.setStatusCode(500);
+            updateModuleAuditTrail.setStatusCode(501);
         } catch (Exception e) {
             moduleAlertService.sendModuleExecutionAlert(e.getMessage(), appConfig.getFeatureName());
             logger.error("Error while running Queries ", e);
-            updateModuleAuditTrail.setStatusCode(500);
+            updateModuleAuditTrail.setStatusCode(501);
         }
         updateModuleAuditTrail.setTimeTaken(System.currentTimeMillis() - start);
         updateModuleAuditTrail.setCount(0);
