@@ -39,7 +39,7 @@ public class EirsData {
         this.operator = operator;
         this.fileName = fileName;
         this.eirNumber = eirNumber;
-        String[] d = data.split(",");
+        String[] d = data.split(",", 3);
         if (EirlistOutputAuditConstants.BLOCKED_TAC_NAME.equals(listName)) {
             this.tac = d[0];
         } else {
