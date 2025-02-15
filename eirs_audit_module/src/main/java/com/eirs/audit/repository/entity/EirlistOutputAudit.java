@@ -22,6 +22,8 @@ public class EirlistOutputAudit {
 
     private String msisdn;
 
+    private String tac;
+
     private String operator;
 
     private java.util.Date createdOn;

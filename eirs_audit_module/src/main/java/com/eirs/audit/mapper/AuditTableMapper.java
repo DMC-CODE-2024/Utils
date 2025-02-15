@@ -14,6 +14,7 @@ public class AuditTableMapper {
         for (EirsData data : listData) {
             EirlistOutputAudit audit = new EirlistOutputAudit();
             audit.setActualImei(data.getActualImei());
+            audit.setTac(data.getTac());
             audit.setImei(data.getImei());
             audit.setImsi(data.getImsi());
             audit.setMsisdn(data.getMsisdn());

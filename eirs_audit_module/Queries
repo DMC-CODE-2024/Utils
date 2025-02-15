@@ -1,9 +1,10 @@
 
 CREATE TABLE aud.eirlist_output_aud (
   id int NOT NULL AUTO_INCREMENT,
-  imei varchar(20) DEFAULT '',
-  msisdn varchar(20) DEFAULT '',
-  imsi varchar(20) DEFAULT '',
+  imei varchar(20) DEFAULT NULL,
+  msisdn varchar(20) DEFAULT NULL,
+  imsi varchar(20) DEFAULT NULL,
+  tac varchar(10) DEFAULT NULL,
   eir_no int NOT NULL,
   actual_imei varchar(20) DEFAULT '',
   created_on timestamp NULL DEFAULT CURRENT_TIMESTAMP,
