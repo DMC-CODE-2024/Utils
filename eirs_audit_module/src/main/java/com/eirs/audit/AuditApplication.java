@@ -35,7 +35,8 @@ public class AuditApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         try {
-            LocalDate date = LocalDate.parse("2025-01-20", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//            LocalDate date = LocalDate.parse(args[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalDate date = LocalDate.now();
             log.info("Audit Module Starting for date:{}", date);
             String selectedOperator = null;
             try {
