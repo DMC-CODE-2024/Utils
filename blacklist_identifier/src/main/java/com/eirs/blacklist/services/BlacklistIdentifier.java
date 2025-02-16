@@ -43,6 +43,7 @@ public class BlacklistIdentifier {
     public void executeQueries(LocalDate localDate) {
         String startDate = localDate.format(edrTableFormat);
         String endDate = localDate.plusDays(1).format(edrTableFormat);
+        Integer count = 0;
         Long start = System.currentTimeMillis();
         if (!moduleAuditTrailService.canProcessRun(localDate, appConfig.getFeatureName())) {
             logger.info("Process:{} will not execute it may already Running or Completed for the day {}", appConfig.getFeatureName(), localDate);
@@ -95,49 +96,49 @@ public class BlacklistIdentifier {
             String query6 = QueriesConstants.DELETE_WHITE_LIST_RECORDS_IMSI.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
             String query7 = QueriesConstants.DELETE_WHITE_LIST_RECORDS_MSISDN.replaceAll(QueriesConstants.PARAM_START_RANGE, startDate).replaceAll(QueriesConstants.PARAM_END_RANGE, endDate);
 
-            queryExecutorService.execute(queryA1);
-            queryExecutorService.execute(queryA2);
-            queryExecutorService.execute(queryA3);
-            queryExecutorService.execute(queryA4);
-            queryExecutorService.execute(queryA5);
-            queryExecutorService.execute(queryA6);
-            queryExecutorService.execute(queryA7);
-            queryExecutorService.execute(queryA8);
+            count = queryExecutorService.execute(queryA1);
+            count = count + queryExecutorService.execute(queryA2);
+            count = count + queryExecutorService.execute(queryA3);
+            count = count + queryExecutorService.execute(queryA4);
+            count = count + queryExecutorService.execute(queryA5);
+            count = count + queryExecutorService.execute(queryA6);
+            count = count + queryExecutorService.execute(queryA7);
+            count = count + queryExecutorService.execute(queryA8);
 
-            queryExecutorService.execute(queryB1);
-            queryExecutorService.execute(queryB2);
-            queryExecutorService.execute(queryB3);
-            queryExecutorService.execute(queryB4);
-            queryExecutorService.execute(queryB5);
-            queryExecutorService.execute(queryB6);
-            queryExecutorService.execute(queryB7);
-            queryExecutorService.execute(queryB8);
+            count = count + queryExecutorService.execute(queryB1);
+            count = count + queryExecutorService.execute(queryB2);
+            count = count + queryExecutorService.execute(queryB3);
+            count = count + queryExecutorService.execute(queryB4);
+            count = count + queryExecutorService.execute(queryB5);
+            count = count + queryExecutorService.execute(queryB6);
+            count = count + queryExecutorService.execute(queryB7);
+            count = count + queryExecutorService.execute(queryB8);
 
-            queryExecutorService.execute(queryC1);
-            queryExecutorService.execute(queryC2);
-            queryExecutorService.execute(queryC3);
-            queryExecutorService.execute(queryC4);
-            queryExecutorService.execute(queryC5);
-            queryExecutorService.execute(queryC6);
-            queryExecutorService.execute(queryC7);
-            queryExecutorService.execute(queryC8);
+            count = count + queryExecutorService.execute(queryC1);
+            count = count + queryExecutorService.execute(queryC2);
+            count = count + queryExecutorService.execute(queryC3);
+            count = count + queryExecutorService.execute(queryC4);
+            count = count + queryExecutorService.execute(queryC5);
+            count = count + queryExecutorService.execute(queryC6);
+            count = count + queryExecutorService.execute(queryC7);
+            count = count + queryExecutorService.execute(queryC8);
 
-            queryExecutorService.execute(queryD1);
-            queryExecutorService.execute(queryD2);
-            queryExecutorService.execute(queryD3);
-            queryExecutorService.execute(queryD4);
-            queryExecutorService.execute(queryD5);
-            queryExecutorService.execute(queryD6);
-            queryExecutorService.execute(queryD7);
-            queryExecutorService.execute(queryD8);
+            count = count + queryExecutorService.execute(queryD1);
+            count = count + queryExecutorService.execute(queryD2);
+            count = count + queryExecutorService.execute(queryD3);
+            count = count + queryExecutorService.execute(queryD4);
+            count = count + queryExecutorService.execute(queryD5);
+            count = count + queryExecutorService.execute(queryD6);
+            count = count + queryExecutorService.execute(queryD7);
+            count = count + queryExecutorService.execute(queryD8);
 
-            queryExecutorService.execute(query1);
-            queryExecutorService.execute(query2);
-            queryExecutorService.execute(query3);
-            queryExecutorService.execute(query4);
-            queryExecutorService.execute(query5);
-            queryExecutorService.execute(query6);
-            queryExecutorService.execute(query7);
+            count = count - queryExecutorService.execute(query1);
+            count = count - queryExecutorService.execute(query2);
+            count = count - queryExecutorService.execute(query3);
+            count = count - queryExecutorService.execute(query4);
+            count = count - queryExecutorService.execute(query5);
+            count = count - queryExecutorService.execute(query6);
+            count = count - queryExecutorService.execute(query7);
             updateModuleAuditTrail.setStatusCode(200);
         } catch (org.springframework.dao.InvalidDataAccessResourceUsageException e) {
             logger.error("Error {}", e.getCause().getMessage(), e);
@@ -149,7 +150,7 @@ public class BlacklistIdentifier {
             updateModuleAuditTrail.setStatusCode(501);
         }
         updateModuleAuditTrail.setTimeTaken(System.currentTimeMillis() - start);
-        updateModuleAuditTrail.setCount(0);
+        updateModuleAuditTrail.setCount(count);
         moduleAuditTrailService.updateAudit(updateModuleAuditTrail);
     }
 
