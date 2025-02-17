@@ -51,7 +51,7 @@ public class ExceptionListAuditProcess implements AuditProcess {
             });
             logger.info("Reading file EIRs file:{} Total Count:{}", (filepath + filename), eirsDataSet.size());
         } catch (Exception e) {
-            logger.error("Exception while Reading filepath:{} filename:{} Error:{}", filepath, filename, e.getMessage());
+            logger.error("Exception while Reading filepath:{} filename:{} Error:{}", filepath, filename, e.getMessage(),e);
             moduleAlertService.sendAuditFileNotFoundAlert(filename, operator, 0, appConfig.getFeatureName());
             throw e;
         }

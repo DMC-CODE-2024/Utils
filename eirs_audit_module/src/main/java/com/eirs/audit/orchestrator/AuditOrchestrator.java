@@ -71,6 +71,7 @@ public class AuditOrchestrator {
         }
         moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build());
         ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build();
+        int insertedRecordCount = 0;
         try {
             List<EirsData> finalMissingRecords = new ArrayList<>();
             LocalDateTime startDate = LocalDateTime.of(localDate, LocalTime.of(0, 0));
@@ -106,6 +107,7 @@ public class AuditOrchestrator {
             logger.info("finalMissingRecords size:{}", finalMissingRecords.size());
             if (finalMissingRecords.size() > 0)
                 eirlistOutputAuditService.save(AuditTableMapper.toEntity(finalMissingRecords));
+            insertedRecordCount = finalMissingRecords.size();
             updateModuleAuditTrail.setStatusCode(200);
         } catch (Exception e) {
             moduleAlertService.sendModuleExecutionAlert(e.getMessage(), appConfig.getFeatureName());
@@ -113,7 +115,8 @@ public class AuditOrchestrator {
             updateModuleAuditTrail.setStatusCode(500);
         }
         updateModuleAuditTrail.setTimeTaken(System.currentTimeMillis() - start);
-        updateModuleAuditTrail.setCount(0);
+//        updateModuleAuditTrail.setCount(0);
+        updateModuleAuditTrail.setCount(insertedRecordCount);
         moduleAuditTrailService.updateAudit(updateModuleAuditTrail);
     }
 }

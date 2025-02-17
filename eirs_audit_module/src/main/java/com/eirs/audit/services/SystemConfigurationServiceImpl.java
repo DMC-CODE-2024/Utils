@@ -34,8 +34,12 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
 
     @PostConstruct
     public void init() {
+        try{
         getOperators();
-    }
+    }catch (Exception e) {
+        Runtime.getRuntime().halt(1);
+        }
+        }
 
     @Override
     public synchronized List<String> getOperators() {
